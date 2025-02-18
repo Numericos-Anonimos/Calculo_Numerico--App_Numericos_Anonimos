@@ -541,7 +541,7 @@ def principal():
         st.title("Aproximação de Polinômios")
         st.write("Insira a equação no seguinte formato:")
         st.latex(r"ax^2 + bx + c")
-        latex_input = mathfield(title="", value=r"", mathml_preview=True)
+        latex_input = mathfield(title="", value=r"ax^2 + bx + c", mathml_preview=True)
 
         if st.button("Calcular"):
             if latex_input:
