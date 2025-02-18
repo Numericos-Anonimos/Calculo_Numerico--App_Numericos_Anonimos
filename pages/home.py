@@ -13,9 +13,9 @@ st.set_page_config(
 )
 
 st.logo(
-    im,
+    "src/img/unifesp_icon.ico",
     link="https://portal.unifesp.br/",
-    icon_image=im,
+    icon_image="src/img/unifesp_icon.ico",
 )
 
 def bisseccao(f, ini, fim):
