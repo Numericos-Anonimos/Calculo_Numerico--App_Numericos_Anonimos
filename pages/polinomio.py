@@ -86,9 +86,13 @@ def secante(x0, x1, tol, a, b, c, max_iter=100):
     
     # Definindo a função quadrática
     def func(x):
-        return a * (x ** 2) + b * x + c  # Definição da função f(x) = ax^2 + bx + c
+        return a * (x ** 2) + b * x + c  # f(x) = ax^2 + bx + c
     
-    for _ in range(max_iter):
+    # Verificação da diferença mínima entre x0 e x1
+    if abs(x1 - x0) < 1e-6:
+        raise ValueError("Os valores iniciais x0 e x1 são muito próximos. Ajuste-os para continuar.")
+    
+    for i in range(max_iter):
         f0 = func(x0)
         f1 = func(x1)
         
@@ -102,6 +106,8 @@ def secante(x0, x1, tol, a, b, c, max_iter=100):
         
         pontos.append(x2)
         
+        print(f"Iteração {i + 1}: x0 = {x0}, x1 = {x1}, x2 = {x2}, f(x0) = {f0}, f(x1) = {f1}")  # Depuração
+        
         # Atualizando os valores para a próxima iteração
         x0, x1 = x1, x2
         
@@ -110,11 +116,6 @@ def secante(x0, x1, tol, a, b, c, max_iter=100):
             break
     
     return x1, pontos  # Retorna a raiz aproximada e os pontos intermediários
-
-
-
-
-
 
 
 
@@ -183,6 +184,13 @@ def principal():
                         coef = [float(c) for c in st.session_state["coeficientes"]]
                         try:
                             raiz, pontos = bisseccao(ini, fim, tolerancia, coef[2], coef[1], coef[0], max_iter)
+                            coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
+                            coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+                            coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+
+                            # Construção da equação com o formato correto
+                            equacao = f"f(x) = {coef_2}x² {coef_1}x {coef_0}"
+                            st.session_state["equacao"] = equacao
                             st.session_state["raiz"] = raiz
                             st.session_state["pontos"] = pontos
                             st.session_state["encontrou_resultado"] = True
@@ -217,8 +225,17 @@ def principal():
                         # Aqui vai a lógica do método de Newton, substitua o "pass" pelo cálculo do método
                         try:
                             raiz, pontos = newton(x0, tolerancia, n, coef[2], coef[1], coef[0])  # Supondo que 'metodo_newton' seja a função do método
-                            st.write(f"Raiz encontrada: {raiz}")
-                            st.write(f"Pontos intermediários: {pontos}")
+                            coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
+                            coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+                            coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+
+                            # Construção da equação com o formato correto
+                            equacao = f"f(x) = {coef_2}x² {coef_1}x {coef_0}"
+                            st.session_state["equacao"] = equacao
+                            st.session_state["raiz"] = raiz
+                            st.session_state["pontos"] = pontos
+                            st.session_state["encontrou_resultado"] = True
+                            st.rerun()
                         except Exception as e:
                             st.write(f"Erro: {e}")
 
@@ -248,8 +265,18 @@ def principal():
                         coef = [float(c) for c in st.session_state["coeficientes"]]
                         try:
                             raiz, pontos = secante( x0,  x1, tolerancia, coef[2], coef[1], coef[0],  n)
+
+                            coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
+                            coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+                            coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
+
+                            # Construção da equação com o formato correto
+                            equacao = f"f(x) = {coef_2}x² {coef_1}x {coef_0}"
+                            st.session_state["equacao"] = equacao
                             st.session_state["raiz"] = raiz
                             st.session_state["pontos"] = pontos
+                            st.session_state["encontrou_resultado"] = True
+                            st.rerun()
                         except ValueError as e:
                             st.write(f"Erro: {e}")
 
@@ -267,41 +294,31 @@ def principal():
                 st.markdown("---")
                 st.write("### Resolvendo por: Bissecção")
                 if "raiz" in st.session_state:
+                    st.write(f"Equação dada: {st.session_state['equacao']}")
                     st.write(f"Raiz encontrada: {st.session_state['raiz']}")
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
+
+
+
             
             if "metodo_newton" in st.session_state and st.session_state["metodo_newton"] and "encontrou_resultado" in st.session_state and st.session_state["encontrou_resultado"]:
                 st.markdown("---")
                 st.write("### Resolvendo por: newton")
                 if "raiz" in st.session_state:
+                    st.write(f"Equação dada: {st.session_state['equacao']}")
                     st.write(f"Raiz encontrada: {st.session_state['raiz']}")
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
+
+
+
 
             if "metodo_secante" in st.session_state and st.session_state["metodo_secante"] and "encontrou_resultado" in st.session_state and st.session_state["encontrou_resultado"]:
                 st.markdown("---")
                 st.write("### Resolvendo por: secante")
                 if "raiz" in st.session_state:
-                        st.write(f"Raiz encontrada: {st.session_state['raiz']}")
-                        st.write(f"Pontos intermediários: {st.session_state['pontos']}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    st.write(f"Equação dada: {st.session_state['equacao']}")
+                    st.write(f"Raiz encontrada: {st.session_state['raiz']}")
+                    st.write(f"Pontos intermediários: {st.session_state['pontos']}")
 
 
 
