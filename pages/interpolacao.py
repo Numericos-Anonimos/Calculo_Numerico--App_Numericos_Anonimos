@@ -84,9 +84,49 @@ def polinomio_interpolador(x_pontos, y_pontos, epsilon=1e-10):
     return coef_arredondados
 
 
+def plot_polinomio_interpolador(coef, x_pontos, y_pontos, epsilon=1e-10):
+    # Calcula os coeficientes do polinômio interpolador
+    # Define a função polinomial com os coeficientes obtidos.
+    # Os coeficientes estão em ordem decrescente:
+    # p(x) = coef[0]*x^(n-1) + coef[1]*x^(n-2) + ... + coef[n-1]
+    def polynomial(x):
+        y = 0
+        n_coef = len(coef)
+        for i, c in enumerate(coef):
+            y += c * (x ** (n_coef - i - 1))
+        return y
+    
+    # Define o intervalo para plotar a curva
+    x_pontos = np.array(x_pontos, dtype=float)
+    x_min, x_max = x_pontos.min() - 1, x_pontos.max() + 1
+    x_range = np.linspace(x_min, x_max, 400)
+    y_range = [polynomial(x) for x in x_range]
+    
+    # Cria DataFrames para os pontos originais e para a curva do polinômio
+    df_pontos = pd.DataFrame({"x": x_pontos, "y": y_pontos})
+    df_polynomial = pd.DataFrame({"x": x_range, "y": y_range})
+    
+    # Cria o gráfico com os pontos originais
+    fig = px.scatter(
+        df_pontos, x="x", y="y",
+        title="Polinômio Interpolador",
+        labels={"x": "x", "y": "y"},
+        template="plotly_dark",
+        color_discrete_sequence=["cyan"]
+    )
+    
+    # Adiciona a linha da curva do polinômio interpolador
+    fig.add_traces(px.line(
+        df_polynomial, x="x", y="y",
+        template="plotly_dark",
+        color_discrete_sequence=["yellow"]
+    ).data)
+    
+    return fig
 
 
 def apresentando_interpolacao():
+    graf = go.figure()
     st.title("Interpolação")
     st.markdown("\n\n\n\n")
     
