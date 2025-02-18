@@ -6,7 +6,14 @@ import plotly.express as px
 import numpy as np
 #from methods import bisseccao
 
-# Função para extrair coeficientes do LaTeX
+
+# Função para limpar o LaTeX
+def limpar_latex(latex):
+    latex_limpo = re.sub(r'\\[a-zA-Z]+{([^}]*)}', r'\1', latex)
+    latex_limpo = latex_limpo.replace("^", "**")
+    latex_limpo = latex_limpo.replace(" ", "")
+    return latex_limpo
+
 def extrair_coeficientes(latex):
     try:
         # Limpar o LaTeX
@@ -26,58 +33,42 @@ def extrair_coeficientes(latex):
 
         return coeficientes
     except Exception as e:
-        st.error(f"Erro ao processar a equação: {e}")
+        print(f"Erro ao processar a equação: {e}")
         return [0, 0, 0]  # Retorna coeficientes nulos em caso de erro
-    
-    
-# Função para limpar o LaTeX
-def limpar_latex(latex):
-    latex_limpo = re.sub(r'\\[a-zA-Z]+{([^}]*)}', r'\1', latex)
-    latex_limpo = latex_limpo.replace("^", "**")
-    latex_limpo = latex_limpo.replace("x", "*x")
-    latex_limpo = latex_limpo.replace(" ", "")
-    return latex_limpo
 
 
-def funcao(a, b, c, x):
-    return a * (x**2) + b * x + c  # Função quadrática
 
-def bisseccao(ini, fim, tolerancia, a, b, c, max_iter):
-    # Verifica se a função já tem raiz nos limites
-    f_ini = funcao(a, b, c, ini)
-    f_fim = funcao(a, b, c, fim)
 
-    if f_ini == 0:  # Raiz exata no limite inferior
-        return ini, [ini]
-    if f_fim == 0:  # Raiz exata no limite superior
-        return fim, [fim]
 
-    # Verifica se a função muda de sinal nos extremos do intervalo
-    if f_ini * f_fim >= 0:
-        raise ValueError(f"Não há raiz no intervalo fornecido. f(ini) = {f_ini}, f(fim) = {f_fim}")
+def bisseccao(ini, fim, a, b, c, max_iter):
+    # Função quadrática f(x) = ax^2 + bx + c
+    def func(x):
+        return a * (x ** 2) + b * x + c
+
+    # Verificação se a função muda de sinal nos extremos
+    if func(ini) * func(fim) >= 0:
+        raise ValueError("Não há raiz no intervalo fornecido.")
 
     pontos = []
     iteracao = 0
 
     # Enquanto o intervalo for maior que a tolerância e o número máximo de iterações não for atingido
-    while abs(fim - ini) > tolerancia and iteracao < max_iter:
-        meio = (ini + fim) / 2.0  # Calcula o ponto médio
+    while abs(fim - ini) > 1e-9 and iteracao < max_iter:
+        meio = (ini + fim) / 2.0  # Ponto médio
         pontos.append(meio)
 
-        # Se a função no meio for zero, encontramos a raiz
-        if funcao(a, b, c, meio) == 0:
-            return meio, pontos
-
-        # Se a raiz estiver no intervalo [ini, meio], ajusta o fim
-        if funcao(a, b, c, ini) * funcao(a, b, c, meio) < 0:
+        # Verifica se a raiz está no intervalo [ini, meio]
+        if func(ini) * func(meio) < 0:
             fim = meio
         else:
             ini = meio
 
         iteracao += 1
 
-    # Retorna o ponto médio como a raiz aproximada e os pontos intermediários
     return meio, pontos
+
+
+
 
 
 
@@ -120,18 +111,17 @@ def secante(x0, x1, tol, a, b, c, max_iter=100):
 
 
 def derivada(a, b, x):
-    return 2*a*x + b  # Derivada da função quadrática f(x) = ax^2 + bx + c
+    return 2 * a * x + b  # Derivada da função quadrática f(x) = ax^2 + bx + c
 
-def newton(x0, tolerancia, max_iter, a, b, c):
+def newton(x0, max_iter, a, b, c):
     pontos = []
-    f = lambda x: a * (x ** 2) + b * x + c  # Função quadrática
-    # Não precisamos calcular a derivada globalmente, apenas passá-la para cada iteração.
-    
+    f = lambda x: a * (x ** 2) + b * x + c  # Função quadrática f(x) = ax^2 + bx + c
+
     for _ in range(max_iter):
         fx0 = f(x0)  # Avalia a função no ponto x0
         dfx0 = derivada(a, b, x0)  # Derivada da função quadrática no ponto x0
 
-        if abs(fx0) < tolerancia:  # Critério de parada se a função estiver próxima de zero
+        if abs(fx0) < 1e-9:  # Critério de parada se a função estiver próxima de zero
             return x0, pontos
 
         if dfx0 == 0:  # Evita divisão por zero
@@ -174,16 +164,15 @@ def principal():
 
                 ini = st.number_input("Insira o limite inferior do intervalo", value=0.0)
                 fim = st.number_input("Insira o limite superior do intervalo", value=1.0)
-                tolerancia = st.number_input("Insira a tolerância", value=0.001)
                 max_iter = st.number_input("Insira o número máximo de iterações", value=100, step=1)
 
-                col_aplicar, col_voltar = st.columns([0.2, 0.2])  # Proporção das colunas ajustada
+                col_aplicar, col_voltar = st.columns([0.2, 0.2])
 
                 with col_aplicar:
-                    if st.button("Aplicar", key="btn_aplicar", use_container_width=True):
-                        coef = [float(c) for c in st.session_state["coeficientes"]]
+                    if st.button("Aplicar"):
+                        coef = coef = [float(c) for c in st.session_state["coeficientes"]]
                         try:
-                            raiz, pontos = bisseccao(ini, fim, tolerancia, coef[2], coef[1], coef[0], max_iter)
+                            raiz, pontos = bisseccao(ini, fim, coef[2], coef[1], coef[0], max_iter)
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
                             coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
                             coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
@@ -198,6 +187,7 @@ def principal():
 
                         except ValueError as e:
                             st.write(f"Erro: {e}")
+                            st.session_state["encontrou_resultado"] = False
 
                 with col_voltar:
                     if st.button("Voltar", key="btn_voltar", use_container_width=True):
@@ -213,8 +203,8 @@ def principal():
             elif "metodo_newton" in st.session_state and st.session_state["metodo_newton"]:
                 st.markdown("---")
                 st.write("### Método escolhido: Newton")
+
                 x0 = st.number_input("Insira o valor inicial 'x0'", value=0.0)
-                tolerancia = st.number_input("Insira a tolerância", value=0.001)
                 n = st.number_input("Insira o número máximo de iterações 'n'", value=10)
 
                 col4, col5 = st.columns([1, 1])  # Criando colunas para alinhar os botões
@@ -224,7 +214,7 @@ def principal():
                         coef = [float(c) for c in st.session_state["coeficientes"]]
                         # Aqui vai a lógica do método de Newton, substitua o "pass" pelo cálculo do método
                         try:
-                            raiz, pontos = newton(x0, tolerancia, n, coef[2], coef[1], coef[0])  # Supondo que 'metodo_newton' seja a função do método
+                            raiz, pontos = newton(x0, n, coef[2], coef[1], coef[0])  # Supondo que 'metodo_newton' seja a função do método
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
                             coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
                             coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
@@ -253,19 +243,25 @@ def principal():
             elif "metodo_secante" in st.session_state and st.session_state["metodo_secante"]:
                 st.markdown("---")
                 st.write("### Método escolhido: Secante")
-                x0 = st.number_input("Insira o valor inicial 'x0'", value=0)
-                x1 = st.number_input("Insira o valor inicial 'x1'", value=0)
-                tolerancia = st.number_input("Insira a tolerância", value=0.001)
-                n = st.number_input("Insira o número máximo de iterações 'n'", value=10)
 
+                # Entrada dos valores para x0, x1, e número de iterações
+                x0 = st.number_input("Insira o valor inicial 'x0'", value=0.0)
+                x1 = st.number_input("Insira o valor inicial 'x1'", value=1.0)
+                n = st.number_input("Insira o número máximo de iterações 'n'", value=10)
+                coef = [float(c) for c in st.session_state["coeficientes"]]
+                
                 col4, col5 = st.columns([1, 1])  # Criando colunas para alinhar os botões
 
                 with col4:
                     if st.button("Aplicar", use_container_width=True):
-                        coef = [float(c) for c in st.session_state["coeficientes"]]
                         try:
-                            raiz, pontos = secante( x0,  x1, tolerancia, coef[2], coef[1], coef[0],  n)
+                            # Garantindo que os coeficientes são passados corretamente
+                            a, b, c = coef[2], coef[1], coef[0]  # Coeficientes da equação quadrática
 
+                            # Aplicando o método da secante
+                            raiz, pontos = secante(x0, x1, coef[2], a, b, c, n)
+
+                            # Formatando a equação para exibição
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
                             coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
                             coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
@@ -277,6 +273,7 @@ def principal():
                             st.session_state["pontos"] = pontos
                             st.session_state["encontrou_resultado"] = True
                             st.rerun()
+
                         except ValueError as e:
                             st.write(f"Erro: {e}")
 
