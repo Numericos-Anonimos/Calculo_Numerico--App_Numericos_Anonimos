@@ -5,4 +5,6 @@ scipy==1.15.2
 streamlit==1.42.0
 langchain==0.3.19
 langchain-groq==0.2.4
+streamlit-mathlive==0.0.2
+sympy==1.13.3
 
