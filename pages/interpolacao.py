@@ -15,7 +15,7 @@ st.logo(
     icon_image=im,
 )
 
-
+#Newton
 def newton_polynomial(x, x_pontos, coef):
     n = len(coef)
     result = coef[0]
@@ -47,7 +47,7 @@ def polinomio_newton(x_points, y_points):
     return coef
 
 
-
+#Lagrange
 def polynomial(x, coef):
     result = 0
     degree = len(coef) - 1
@@ -71,7 +71,7 @@ def polinomio_interpolador(x_pontos, y_pontos, epsilon=1e-10):
     y_pontos = np.array(y_pontos, dtype=float)  # Garantir que y_pontos seja um array de floats
     n = len(x_pontos)
     A = np.zeros((n, n))
-
+ 
     for i in range(n):
         for j in range(n):
             A[i, j] = x_pontos[i] ** (n - j - 1)
@@ -118,31 +118,55 @@ def apresentando_interpolacao():
 
     if "lagrange" in st.session_state and st.session_state["lagrange"] and "Dados" in st.session_state:
         st.markdown("---")
-        st.header("Polinômio Interpolador Lagrange: ")
-        # Extrair os pontos x e y
-        x_pontos = df['X'].values
-        y_pontos = df['y'].values
-                    
-        # Calcular o polinômio interpolador
-        coef = polinomio_interpolador(x_pontos, y_pontos)
-        st.write(f"Coeficientes do polinômio interpolador: {coef}")
-                    
-                    # Exibir o polinômio resultante
-        polinomio = "f(x) = "
+        st.title("Interpolação Lagrange: ")
 
-        for i, c in enumerate(coef):
-            polinomio += f"{c:.4f}x^{len(coef) - i - 1} "
-            if i < len(coef) - 1:
-                polinomio += "+ "
+        # Extrair os pontos x e y e converter para float
+        x_pontos = df['X'].astype(float).values
+        y_pontos = df['y'].astype(float).values
+
+        # Verificar se todos os valores são NaN
+        if np.isnan(x_pontos).all() or np.isnan(y_pontos).all():
+            st.error("Não foi possível realizar a interpolação. A tabela contém apenas valores vazios.")
+        else:
+            # Calcular o polinômio interpolador
+            coef = polinomio_interpolador(x_pontos, y_pontos)
+            st.write(f"Coeficientes do polinômio interpolador: {coef}")
+
+            # Exibir o polinômio resultante
+            polinomio = "f(x) = "
+            for i, c in enumerate(coef):
+                polinomio += f"{c:.4f}x^{len(coef) - i - 1} "
+                if i < len(coef) - 1:
+                    polinomio += "+ "
             st.write(f"Polinômio interpolador: {polinomio}")
 
-        
+            st.write("Método incremental que usa diferenças divididas para construir o polinômio. Permite adicionar pontos sem recalcular os anteriores, sendo mais eficiente para novos dados.")
 
-        coef = polinomio_interpolador(x_pontos, y_pontos)
-        st.write(coef)
+    elif "newton" in st.session_state and st.session_state["newton"] and "Dados" in st.session_state:
+        st.markdown("---")
+        st.title("Interpolação Newton: ")
 
-    elif "newton" in st.session_state and st.session_state["newton"]:
-        pass
+        # Extrair os pontos x e y e converter para float
+        x_pontos = df['X'].astype(float).values
+        y_pontos = df['y'].astype(float).values
+
+        # Verificar se todos os valores são NaN
+        if np.isnan(x_pontos).all() or np.isnan(y_pontos).all():
+            st.error("Não foi possível realizar a interpolação. A tabela contém apenas valores vazios.")
+        else:
+            # Calcular os coeficientes do polinômio de Newton
+            coef = polinomio_newton(x_pontos, y_pontos)
+            st.write(f"Coeficientes do polinômio de Newton: {coef}")
+
+            # Construir a string do polinômio
+            polinomio_str = f"{coef[0]:.4f}"
+            for i in range(1, len(coef)):
+                termo = " * ".join([f"(x - {x_pontos[j]:.4f})" for j in range(i)])
+                polinomio_str += f" + ({coef[i]:.4f}) * {termo}"
+
+            st.write(f"Polinômio interpolador de Newton: {polinomio_str}")
+
+            st.write("Método que encontra um polinômio que passa exatamente por todos os pontos dados, usando uma combinação de funções base. É eficiente, mas pode ser instável para grandes conjuntos de dados.")
 
 
 
@@ -160,7 +184,7 @@ def apresentando_interpolacao():
 
         # Adicionando o método Newton
         with st.container(border=True):
-            if st.button("Interpolador de Newton") and not st.session_state["newton"]:
+            if st.button("Interpolador de Newton"):
                 if not df.empty:
                     st.session_state["Dados"] = df
                     st.session_state["newton"] = True

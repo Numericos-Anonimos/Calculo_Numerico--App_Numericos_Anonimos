@@ -4,7 +4,8 @@ import sympy as sp
 import re
 import plotly.express as px
 import numpy as np
-#from methods import bisseccao
+import plotly.graph_objects as go
+import pandas as pd
 
 
 # Função para limpar o LaTeX
@@ -65,10 +66,61 @@ def bisseccao(ini, fim, a, b, c, max_iter):
 
         iteracao += 1
 
-    return meio, pontos
+    return meio, np.array(pontos)
 
 
 
+def plotar_bisseccao(ini, fim, raiz, pontos, xmin, xmax, n, a, b, c):
+    def func(x):
+        return a * (x ** 2) + b * x + c
+
+    # Gera os pontos para a curva da função
+    x_vals = np.linspace(xmin, xmax, n)
+    y_vals = func(x_vals)
+
+    # Cria o gráfico da função usando Plotly Express
+    fig = px.line(
+        x=x_vals,
+        y=y_vals,
+        title='Método da Bisseção',
+        labels={'x': 'x', 'y': 'f(x)'},
+        template='plotly_dark'
+    )
+
+    # Adiciona os pontos e as linhas dos passos da bissecção
+    fig.add_scatter(
+        x=pontos,
+        y=[func(p) for p in pontos],
+        mode='markers+lines',
+        marker=dict(color='cyan', size=8),
+        line=dict(color='gray', dash='dot'),
+        name='Passos da Bissecção'
+    )
+
+    # Adiciona o ponto da raiz final (onde f(x) = 0)
+    fig.add_scatter(
+        x=[raiz],
+        y=[0],
+        mode='markers',
+        marker=dict(color='red', size=12),
+        name=f'Raiz Final: {raiz:.9f}'
+    )
+
+    # Adiciona linhas verticais para indicar os limites iniciais e finais do intervalo
+    fig.add_vline(
+        x=ini,
+        line_dash="dash",
+        line_color="green",
+        annotation_text="Início (a)"
+    )
+    fig.add_vline(
+        x=fim,
+        line_dash="dash",
+        line_color="green",
+        annotation_text="Fim (b)"
+    )
+
+    return fig
 
 
 
@@ -109,6 +161,67 @@ def secante(x0, x1, tol, a, b, c, max_iter=100):
     return x1, pontos  # Retorna a raiz aproximada e os pontos intermediários
 
 
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+def plot_secantes(raiz, pontos, xmin, xmax, n, a, b, c):
+
+    # Define a função quadrática
+    def f(x):
+        return a * (x ** 2) + b * x + c  # f(x) = ax² + bx + c
+
+    # Gera os pontos para a curva da função
+    x = np.linspace(xmin, xmax, n)
+    y = f(x)
+    df_func = pd.DataFrame({'x': x, 'f(x)': y})
+    
+    # Converte pontos para um array NumPy para operações vetorizadas
+    pontos = np.array(pontos)
+    df_pontos = pd.DataFrame({
+        'x': pontos,
+        'y': f(pontos),
+        'Iterações': range(len(pontos))
+    })
+
+    # Cria o gráfico da função
+    fig = px.line(df_func, x='x', y='f(x)', 
+                  title='Método das Secantes', 
+                  labels={'x': 'x', 'f(x)': 'f(x)'}, 
+                  template='plotly_dark')
+
+    # Adiciona os pontos das iterações conectados por linhas
+    fig.add_scatter(x=df_pontos['x'], y=df_pontos['y'], mode='lines', 
+                    marker=dict(color='cyan', size=8), name='Iterações')
+
+    # Adiciona os "chutes" iniciais, verificando se há pontos suficientes
+    if len(pontos) > 0:
+        fig.add_scatter(x=[pontos[0]], y=[f(pontos[0])], mode='markers', 
+                        marker=dict(color='orange', size=12, symbol='circle'),
+                        name='Chute inicial (x0)')
+    if len(pontos) > 1:
+        fig.add_scatter(x=[pontos[1]], y=[f(pontos[1])], mode='markers', 
+                        marker=dict(color='orange', size=12, symbol='diamond'),
+                        name='Chute inicial (x1)')
+
+    # Adiciona o ponto final (raiz aproximada)
+    fig.add_scatter(x=[raiz], y=[f(raiz)], mode='markers',
+                    marker=dict(color='yellow', size=12, symbol='star-diamond'),
+                    name='Raiz Aproximada')
+
+    # Se desejar traçar as secantes entre os pontos, descomente o trecho abaixo:
+    """
+    for i in range(len(pontos)-1):
+        x_line = [pontos[i], pontos[i+1]]
+        y_line = [f(pontos[i]), f(pontos[i+1])]
+        fig.add_scatter(x=x_line, y=y_line, mode='lines', 
+                        line=dict(color='red', dash='dash'), name='Secantes')
+    """
+
+    return fig
+
+
+
 
 def derivada(a, b, x):
     return 2 * a * x + b  # Derivada da função quadrática f(x) = ax^2 + bx + c
@@ -135,6 +248,59 @@ def newton(x0, max_iter, a, b, c):
     return x0, pontos  # Retorna a raiz aproximada e os pontos intermediários
 
 
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+def plot_heron(raiz, pontos, xmin, xmax, n, a, b, c):
+    # Define a função quadrática
+    f = lambda x: a * (x ** 2) + b * x + c
+
+    # Gera os valores de x para plotar a função e calcula os correspondentes y
+    x_vals = np.linspace(xmin, xmax, n)
+    y_vals = f(x_vals)
+    
+    # Cria DataFrames para a função f(x) e para a linha y = 0
+    df_func = pd.DataFrame({'x': x_vals, 'y': y_vals, 'trace': 'f(x)'})
+    df_zero = pd.DataFrame({'x': x_vals, 'y': np.zeros_like(x_vals), 'trace': 'y = 0'})
+    
+    # Converte os pontos de iteração para array, se necessário, e cria o DataFrame
+    pontos = np.array(pontos)
+    df_pontos = pd.DataFrame({'x': pontos, 'y': f(pontos), 'trace': 'Iterações'})
+    
+    # Concatena os DataFrames para gerar as linhas do gráfico
+    df_lines = pd.concat([df_func, df_zero])
+    
+    # Cria o gráfico usando Plotly Express
+    fig = px.line(
+        df_lines,
+        x='x',
+        y='y',
+        color='trace',
+        title='Método de Heron (Newton)',
+        labels={'x': 'x', 'y': 'f(x)'},
+        template='plotly_dark'
+    )
+    
+    # Adiciona os pontos das iterações como scatter
+    fig.add_scatter(
+        x=df_pontos['x'],
+        y=df_pontos['y'],
+        mode='markers',
+        name='Iterações',
+        marker=dict(color='cyan')
+    )
+    
+    # Adiciona o ponto final (raiz) com destaque
+    fig.add_scatter(
+        x=[raiz],
+        y=[f(raiz)],
+        mode='markers',
+        marker=dict(color='yellow', size=12, symbol='diamond'),
+        name='Ponto Final'
+    )
+    
+    return fig
 
 
 
@@ -150,6 +316,7 @@ def newton(x0, max_iter, a, b, c):
 
 # Função principal
 def principal():
+    graf = go.Figure()
     
     if "calcular" in st.session_state and st.session_state["calcular"]:
         if "coeficientes" in st.session_state and st.session_state["coeficientes"]:
@@ -173,6 +340,7 @@ def principal():
                         coef = coef = [float(c) for c in st.session_state["coeficientes"]]
                         try:
                             raiz, pontos = bisseccao(ini, fim, coef[2], coef[1], coef[0], max_iter)
+                            graf = plotar_bisseccao(ini, fim, raiz, pontos, ini-1, fim+1, max_iter, coef[2], coef[1], coef[0])
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
                             coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
                             coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
@@ -183,6 +351,7 @@ def principal():
                             st.session_state["raiz"] = raiz
                             st.session_state["pontos"] = pontos
                             st.session_state["encontrou_resultado"] = True
+                            st.session_state["grafico"] = graf
                             st.rerun()
 
                         except ValueError as e:
@@ -215,6 +384,7 @@ def principal():
                         # Aqui vai a lógica do método de Newton, substitua o "pass" pelo cálculo do método
                         try:
                             raiz, pontos = newton(x0, n, coef[2], coef[1], coef[0])  # Supondo que 'metodo_newton' seja a função do método
+                            graf = plot_heron(raiz,pontos, x0-2, x0+2, n, coef[2], coef[1], coef[0])
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
                             coef_1 = f"{coef[1]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
                             coef_0 = f"{coef[0]:+.1f}"  # Formatação para 1 casa decimal, incluindo o sinal
@@ -225,6 +395,7 @@ def principal():
                             st.session_state["raiz"] = raiz
                             st.session_state["pontos"] = pontos
                             st.session_state["encontrou_resultado"] = True
+                            st.session_state["grafico"] = graf
                             st.rerun()
                         except Exception as e:
                             st.write(f"Erro: {e}")
@@ -260,6 +431,7 @@ def principal():
 
                             # Aplicando o método da secante
                             raiz, pontos = secante(x0, x1, coef[2], a, b, c, n)
+                            graf = plot_secantes(raiz, pontos, x0-1, x1+1, n, a, b, c)
 
                             # Formatando a equação para exibição
                             coef_2 = f"{coef[2]:.1f}"  # Formatação para 1 casa decimal
@@ -272,6 +444,7 @@ def principal():
                             st.session_state["raiz"] = raiz
                             st.session_state["pontos"] = pontos
                             st.session_state["encontrou_resultado"] = True
+                            st.session_state["grafico"] = graf
                             st.rerun()
 
                         except ValueError as e:
@@ -294,6 +467,7 @@ def principal():
                     st.write(f"Equação dada: {st.session_state['equacao']}")
                     st.write(f"Raiz encontrada: {st.session_state['raiz']}")
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
+                    st.plotly_chart(st.session_state['grafico'])
 
 
 
@@ -305,6 +479,7 @@ def principal():
                     st.write(f"Equação dada: {st.session_state['equacao']}")
                     st.write(f"Raiz encontrada: {st.session_state['raiz']}")
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
+                    st.plotly_chart(st.session_state['grafico'])
 
 
 
@@ -316,6 +491,7 @@ def principal():
                     st.write(f"Equação dada: {st.session_state['equacao']}")
                     st.write(f"Raiz encontrada: {st.session_state['raiz']}")
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
+                    st.plotly_chart(st.session_state['grafico'])
 
 
 
