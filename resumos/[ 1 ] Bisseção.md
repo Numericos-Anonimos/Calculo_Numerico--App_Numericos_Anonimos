@@ -76,8 +76,6 @@ fig = plotar_bisseccao(f, 1.0, 2.0, raiz, pontos, 0.0, 3.0, 1000)
 fig.show()
 ~~~
 
-<grafico>
-
 ---
 
 ## Vantagens

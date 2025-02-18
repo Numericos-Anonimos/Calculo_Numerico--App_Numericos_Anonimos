@@ -2,7 +2,8 @@ import pandas as pd
 from datetime import datetime
 import streamlit as st
 from PIL import Image
-
+import plotly.express as px
+import numpy as np
 
 im = Image.open("src/img/unifesp_icon.ico")
 st.set_page_config(
@@ -11,53 +12,100 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("Numéricos Anônimos")
-
 st.logo(
     im,
     link="https://portal.unifesp.br/",
     icon_image=im,
 )
 
+def bisseccao(f, ini, fim):
+        if f(ini) * f(fim) >= 0:
+            raise ValueError("Não há raiz no intervalo [a, b].")
+
+        pontos = []
+        while abs(fim - ini) > 1e-9:
+            meio = (ini + fim) / 2.0
+            pontos.append(meio)
+
+            if f(ini) * f(meio) < 0:
+                fim = meio
+            else:
+                ini = meio
+
+        return meio, np.array(pontos)
+
+    # Função para gerar o gráfico
+def plotar_bisseccao(f, ini, fim, raiz, pontos, xmin, xmax, n):
+    x = np.linspace(xmin, xmax, n)
+    y = f(x)
+
+    fig = px.line(x=x, y=y, title='',
+                    labels={'x': 'x', 'y': 'f(x)'},
+                    template='plotly_dark')
+
+        # Adiciona os pontos intermediários do método
+    fig.add_scatter(x=pontos, y=[f(p) for p in pontos],
+                        mode='markers+lines', marker=dict(color='cyan', size=8),
+                        line=dict(color='gray', dash='dot'), name='Passos da Bissecção')
+
+        # Adiciona o ponto final da raiz
+    fig.add_scatter(x=[raiz], y=[0], mode='markers',
+                        marker=dict(color='red', size=12), name=f'Raiz Final: {raiz:.9f}')
+
+        # Adiciona as linhas verticais delimitando o intervalo inicial
+    fig.add_vline(x=ini, line_dash="dash", line_color="green", annotation_text="Início (a)")
+    fig.add_vline(x=fim, line_dash="dash", line_color="green", annotation_text="Fim (b)")
+
+    return fig
+
+
+
+
+
+
+
 # Verificar se a chave da página "Bisseção" foi marcada na sessão
 if "Bissecao" in  st.session_state and st.session_state["Bissecao"]:
-    st.write("Bisseção")
-
     def read_file():
-        with open('resumos/[ 1 ] Bisseção.md', 'r') as file:
+        with open('resumos/[ 1 ] Bisseção.md', 'r', encoding="utf-8") as file:
             data = file.read()
-        st.write(data)
+        st.markdown(data)  # Exibe com formatação correta
 
     read_file()
+
+    
+    f = lambda x: x**2 - 2
+
+    # Executando o método da bisseção
+    raiz, pontos = bisseccao(f, 1.0, 2.0)
+    # Gerando o gráfico
+    fig = plotar_bisseccao(f, 1.0, 2.0, raiz, pontos, 0.0, 3.0, 1000)
+
+    # Exibindo no Streamlit
+    st.title(f"Visualização do Método da Bisseção:  ")
+    st.plotly_chart(fig, use_container_width=True)
+    
 
     if st.button("Voltar"):
         st.session_state["Bissecao"] = False
         st.empty()
         st.rerun()
-elif "Newton" in  st.session_state and st.session_state["Newton"]:
-    st.write("Newton")
 
+elif "Newton" in  st.session_state and st.session_state["Newton"]:
     def read_file():
-        with open('resumos/[ 1 ] Heron Newton.md', 'r') as file:
+        with open('resumos/[ 1 ] Heron Newton.md', 'r', encoding="utf-8") as file:
             data = file.read()
         st.write(data)
 
     read_file()
-
-    if st.button("Voltar"):
-        st.session_state["Newton"] = False
-        st.empty()
-        st.rerun()
 
     if st.button("Voltar"):
         st.session_state["Bissecao"] = False
         st.empty()
         st.rerun()
 elif "Secante" in  st.session_state and st.session_state["Secante"]:
-    st.write("Secante")
-
     def read_file():
-        with open('resumos/[ 1 ] Método das Secantes.md', 'r') as file:
+        with open('resumos/[ 1 ] Método das Secantes.md', 'r', encoding="utf-8") as file:
             data = file.read()
         st.write(data)
 
@@ -67,7 +115,70 @@ elif "Secante" in  st.session_state and st.session_state["Secante"]:
         st.session_state["Secante"] = False
         st.empty()
         st.rerun()
+elif "sistemas_lineares" in  st.session_state and st.session_state["sistemas_lineares"]:
+    def read_file():
+        with open('resumos/[ 2 ] Jacobi e Gauss-Seidel.md', 'r', encoding="utf-8") as file:
+            data = file.read()
+        st.write(data)
+
+    read_file()
+
+    if st.button("Voltar"):
+        st.session_state["sistemas_lineares"] = False
+        st.empty()
+        st.rerun()
+
+    
+elif "interpol" in  st.session_state and st.session_state["interpol"] :
+    def read_file():
+        with open('resumos/[ 4 ] Interpolação.md', 'r', encoding="utf-8") as file:
+            data = file.read()
+        st.write(data)
+
+    read_file()
+
+    if st.button("Voltar"):
+        st.session_state["interpol"] = False
+        st.empty()
+        st.rerun()
+elif "integra" in  st.session_state and st.session_state["integra"] :
+    def read_file():
+        with open('resumos/[ 7 ] Integração.md', 'r', encoding="utf-8") as file:
+            data = file.read()
+        st.write(data)
+
+    read_file()
+
+    if st.button("Voltar"):
+        st.session_state["integra"] = False
+        st.empty()
+        st.rerun()
+elif "edo1" in  st.session_state and st.session_state["edo1"] :
+    def read_file():
+        with open('resumos/[ 8 ] Método de Euler.md', 'r', encoding="utf-8") as file:
+            data = file.read()
+        st.write(data)
+
+    read_file()
+
+    if st.button("Voltar"):
+        st.session_state["edo1"] = False
+        st.empty()
+        st.rerun()
+elif "edo2" in  st.session_state and st.session_state["edo2"] :
+    def read_file():
+        with open('resumos/[ 8 ] Runge Kutta.md', 'r', encoding="utf-8") as file:
+            data = file.read()
+        st.write(data)
+
+    read_file()
+
+    if st.button("Voltar"):
+        st.session_state["edo1"] = False
+        st.empty()
+        st.rerun()
 else:
+    st.title("Numéricos Anônimos")
     # Exibir os botões se a página "Bisseção" não foi escolhida
     col1, col2 = st.columns(2, gap='small')
 
@@ -122,8 +233,10 @@ else:
     O **Numérico Anônimos** representa uma forma prática e acessível de aplicar métodos matemáticos fundamentais, promovendo o entendimento e o uso desses conceitos em problemas reais e desafiadores.
     """)
 
-    st.header("Métodos Utilizados: ")
+    st.markdown("---")
+    st.header("Métodos Utilizados")
 
+    st.markdown("<small>Métodos para aproximar raizes de polinômios:</small>", unsafe_allow_html=True)
     if st.button("**Método da Bisseção**", use_container_width=True):
         st.session_state["Bissecao"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
@@ -137,10 +250,24 @@ else:
         st.session_state["Secante"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    if st.button("**Integração**", use_container_width=True):
-        st.session_state["Bissecao"] = True  # Atualiza o estado para marcar a página como clicada
+    st.markdown("<small>Métodos para resolver sistemas lineares:</small>", unsafe_allow_html=True)
+    if st.button("**Sistemas Lineares**", use_container_width=True):
+        st.session_state["sistemas_lineares"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    if st.button("**Método**", use_container_width=True):
-        st.session_state["Bissecao"] = True  # Atualiza o estado para marcar a página como clicada
+    st.markdown("<small>Métodos de interpolação:</small>", unsafe_allow_html=True)
+    if st.button("**Interpolação**", use_container_width=True):
+        st.session_state["interpol"] = True  # Atualiza o estado para marcar a página como clicada
+        st.rerun()  # Garante que a página seja recarregada com a nova página
+
+    if st.button("**Integração**", use_container_width=True):
+        st.session_state["integra"] = True  # Atualiza o estado para marcar a página como clicada
+        st.rerun()  # Garante que a página seja recarregada com a nova página
+
+    if st.button("**Método de Euler**", use_container_width=True):
+        st.session_state["edo1"] = True  # Atualiza o estado para marcar a página como clicada
+        st.rerun()  # Garante que a página seja recarregada com a nova página
+
+    if st.button("**Runge Kutta**", use_container_width=True):
+        st.session_state["edo2"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
