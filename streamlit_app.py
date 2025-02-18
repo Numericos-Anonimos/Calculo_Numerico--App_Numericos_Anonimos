@@ -11,11 +11,17 @@ pg = st.navigation([
     st.Page("pages/derivacao.py", title="Problemas de Valor Inicial", icon="📝"),
 ])
 
+st.set_page_config(
+    page_title="Numéricos Anônimos",
+    page_icon= "src/img/unifesp_icon.ico",
+    layout="wide",
+)
+
 if st.session_state.get("chat_history") is None:
     st.session_state["chat_history"] = []
 
 with st.sidebar:
-    import chatbot.chat as chat
+    import chat as chat
     chat.print_chat_history()
 
 pg.run()

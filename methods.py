@@ -3,8 +3,6 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config( layout="wide")
-
 # Leia o arquivo de texto A.md
 def read_file():
     with open('A.md', 'r') as file:

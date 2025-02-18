@@ -27,7 +27,7 @@ def buscar_contexto(page):
         case _:
             return "Página não encontrada"
 
-import chatbot.chain as c
+import chain as c
 chain = c.create_chain(temperature=0.1)
 
 def print_chat_history():

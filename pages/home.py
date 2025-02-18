@@ -3,20 +3,12 @@ from datetime import datetime
 import streamlit as st
 from PIL import Image
 
-
-im = Image.open("src/img/unifesp_icon.ico")
-st.set_page_config(
-    page_title="Numéricos Anônimos",
-    page_icon=im,
-    layout="wide",
-)
-
 st.title("Numéricos Anônimos")
 
 st.logo(
-    im,
+    "src/img/unifesp_icon.ico",
     link="https://portal.unifesp.br/",
-    icon_image=im,
+    icon_image="src/img/unifesp_icon.ico",
 )
 
 # Verificar se a chave da página "Bisseção" foi marcada na sessão
