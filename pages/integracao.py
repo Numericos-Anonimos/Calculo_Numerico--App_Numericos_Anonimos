@@ -121,7 +121,7 @@ def plot_trapezoidal_composta_interactive(f, a, b, n):
                       xaxis_title='x',
                       yaxis_title='f(x)',
                       plot_bgcolor='rgba(0,0,0,0)')
-    fig.show()
+    st.plotly_chart(fig)
 
 
 
