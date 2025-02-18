@@ -3,38 +3,57 @@ from st_mathlive import mathfield
 from PIL import Image
 import re
 import sympy as sp
+import numpy as np
+import plotly.graph_objects as go
 
-def extrair_coeficientes(latex):
-    try:
-        # Limpar o LaTeX
-        latex_limpo = limpar_latex(latex)
+def euler(func, x0, y0, xf, h):
+    n = int((xf - x0) / h)
+    xs = np.linspace(x0, xf, n+1)
+    ys = np.zeros(n+1)
+    ys[0] = y0
 
-        # Usar sympy para converter o LaTeX em uma expressão simbólica
-        x = sp.symbols('x')
-        expressao = sp.sympify(latex_limpo)
+    for i in range(n):
+        ys[i+1] = ys[i] + h * func(xs[i], ys[i])
 
-        # Extrair os coeficientes usando sympy
-        grau_maximo = expressao.as_poly().degree()
-        coeficientes = [expressao.coeff(x, i) for i in range(grau_maximo + 1)]
-        return coeficientes
-    except Exception as e:
-        st.error(f"Erro ao processar a equação: {e}")
-        return []
+    return xs, ys
 
-def limpar_latex(latex):
-    # Remove formatação como \mathrm, \text, etc.
-    latex_limpo = re.sub(r'\\[a-zA-Z]+{([^}]*)}', r'\1', latex)  # Remove \mathrm{...}, \text{...}, etc.
+def plot_euler(func, x0, y0, xf, h):
+    xs, ys = euler(func, x0, y0, xf, h)
     
-    # Substituir "^" por "**" para compatibilidade com Python
-    latex_limpo = latex_limpo.replace("^", "**")
+    fig = go.Figure()
     
-    # Substituir "x" por "*x" para garantir multiplicação explícita
-    latex_limpo = latex_limpo.replace("x", "*x")
+    fig.add_trace(go.Scatter(
+        x=xs,
+        y=ys,
+        mode='lines+markers',
+        name='Método de Euler',
+        line=dict(color='lime', width=3),
+        marker=dict(color='cyan', size=8)
+    ))
     
-    # Garantir que a expressão esteja em um formato compatível
-    latex_limpo = latex_limpo.replace(" ", "")  # Remover espaços em branco extras
+    # Configurar layout com fundo preto e template "plotly_dark"
+    fig.update_layout(
+        title='Solução da EDO pelo Método de Euler',
+        xaxis_title='x',
+        yaxis_title='y',
+        template='plotly_dark',
+        paper_bgcolor='black',
+        plot_bgcolor='black',
+        font=dict(color='white')
+    )
     
-    return latex_limpo
+    fig.show()
+
+def processar_latex(latex):
+    # Remove os primeiros 13 caracteres e o último
+    expr = latex[13:-1]  # Remove os 13 primeiros e o último caractere
+    # Substituir LaTeX para formato Python (se necessário)
+    expr = expr.replace("^", "**")
+    # Inserir * entre números e variáveis (ex: 3x -> 3*x)
+    expr = re.sub(r'(?<=\d)(?=x)', '*', expr)
+    # Inserir * entre variáveis e números (ex: x2 -> x*2)
+    expr = re.sub(r'(?<=x)(?=\d)', '*', expr)
+    return expr
 
 im = Image.open("src/img/unifesp_icon.ico")
 
@@ -50,7 +69,7 @@ st.write("Insira a derivada no seguinte formato:")
 st.latex(r"\frac{d}{dx}(x^2 + 3x + 2)")
 
 # Usando mathfield para entrada de LaTeX
-latex_input = mathfield(title="Digite o polinômio:", value=r"", mathml_preview=True)
+latex_input = mathfield(title="", value=r"\frac{d}{dx}(x^2 + 3x + 2)", mathml_preview=True)
 
 # Botão para calcular
 if st.button("Calcular"):
@@ -60,12 +79,26 @@ if st.button("Calcular"):
         st.write(f"Equação inserida: {latex_input_str}")  # Exibir a entrada para depuração
         
         try:
-            # Chamar a função para extrair coeficientes
-            coeficientes = extrair_coeficientes(latex_input_str)
+            # Processar LaTeX para obter a função
+            func_str = processar_latex(latex_input_str)
             
-            if coeficientes:
-                # Exibir os coeficientes
-                st.write("Coeficientes extraídos:", coeficientes)
+            if func_str:
+                # Exibir a função processada
+                st.write("Função processada:", func_str)
+                # Usar sympy para transformar a string em uma expressão simbólica
+                x, y = sp.symbols('x y')
+                expressao = sp.sympify(func_str)
+
+                # Gerar a função f(x, y) com lambdify
+                f_func = sp.lambdify((x, y), expressao, 'numpy')
+
+                # Visualizar a função
+                st.write(f"Equação processada: {func_str}")
+                st.latex(f"${func_str}$")
+
+                # Exemplo de uso do método de Euler para gráficos
+                x0, y0, xf, h = 0, 1, 10, 0.1  # Parâmetros do método de Euler
+                plot_euler(f_func, x0, y0, xf, h)
             else:
                 st.write("Não foi possível extrair coeficientes.")
         except Exception as e:
