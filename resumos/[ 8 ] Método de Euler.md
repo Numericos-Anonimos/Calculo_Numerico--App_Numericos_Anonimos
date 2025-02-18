@@ -157,7 +157,7 @@ xs, ys = euler(f, x0, y0, xf, h)
 
 ~~~
 
-<gráfico>
+<grafico>
 
 ---
 
