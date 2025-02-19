@@ -4,6 +4,8 @@ from st_mathlive import mathfield
 from PIL import Image
 import numpy as np
 import plotly.graph_objects as go
+import plotly.express as px
+
 
 st.session_state['current_page'] = "Interpolação"
 
@@ -14,14 +16,18 @@ st.logo(
 )
 
 #Newton
-def newton_polynomial(x, x_pontos, coef):
-    n = len(coef)
-    result = coef[0]
-    for i in range(1, n):
-        term = coef[i]
-        for j in range(i):
-            term *= (x - x_pontos[j])
-        result += term
+import numpy as np
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+
+def newton_polynomial(x, x_points, coef):
+    x_points = np.array(x_points, dtype=float)
+    result = float(coef[0])
+    term = 1.0
+    for i in range(1, len(coef)):
+        term *= (x - float(x_points[i-1]))
+        result += float(coef[i]) * term
     return result
 
 def diferenca(x, y):
@@ -34,24 +40,73 @@ def diferenca(x, y):
 
 def polinomio_newton(x_points, y_points):
     coef = diferenca(x_points, y_points)
-
-
-
-    polinomio_str = f"{coef[0]:.4f}"
+    coef = np.array(coef, dtype=float)
+    
+    polinomio_str = f"{float(coef[0]):.4f}"
     for i in range(1, len(coef)):
-        termo = " * ".join([f"(x - {x_points[j]:.4f})" for j in range(i)])
-        polinomio_str += f" + ({coef[i]:.4f}) * {termo}"
+        termo = " * ".join([f"(x - {float(x_points[j]):.4f})" for j in range(i)])
+        polinomio_str += f" + ({float(coef[i]):.4f}) * {termo}"
+    
+    return coef, polinomio_str
 
-    return coef
-
+def plot_newton_interpolador(coef, x_points, y_points, polinomio_str):
+    x_points = np.array(x_points, dtype=float)
+    y_points = np.array(y_points, dtype=float)
+    
+    # Intervalo de plotagem com margem
+    x_min, x_max = x_points.min() - 1, x_points.max() + 1
+    x_range = np.linspace(x_min, x_max, 400)
+    y_range = [newton_polynomial(x, x_points, coef) for x in x_range]
+    
+    # Criar DataFrames
+    df_points = pd.DataFrame({"x": x_points, "y": y_points})
+    df_poly = pd.DataFrame({"x": x_range, "y": y_range})
+    
+    # Criar figura
+    fig = px.scatter(
+        df_points,
+        x="x",
+        y="y",
+        title="Polinômio Interpolador de Newton",
+        labels={"x": "x", "y": "y"},
+        template="plotly_dark",
+        color_discrete_sequence=["cyan"]
+    )
+    
+    # Adicionar curva do polinômio
+    fig.add_trace(go.Scatter(
+        x=df_poly["x"],
+        y=df_poly["y"],
+        mode="lines",
+        line=dict(color="yellow", width=2),
+        name="Polinômio Interpolador"
+    ))
+    
+    # Adicionar equação
+    fig.add_annotation(
+        x=x_min + (x_max - x_min)*0.05,
+        y=np.max(y_range),
+        text=f"f(x) = {polinomio_str}",
+        showarrow=False,
+        font=dict(color="white", size=12),
+        bgcolor="rgba(0,0,0,0.5)"
+    )
+    
+    # Ajustar layout
+    fig.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        margin=dict(l=50, r=50, t=80, b=50)
+    )
+    
+    return fig
 
 #Lagrange
-def polynomial(x, coef):
-    result = 0
-    degree = len(coef) - 1
-    for i in range(len(coef)):
-        result += coef[i] * x ** (degree - i)
-    return result
 
 def lagrange_interpolation(x_pontos, y_pontos):
     n = len(x_pontos)
@@ -64,12 +119,17 @@ def lagrange_interpolation(x_pontos, y_pontos):
         result += term
     return result
 
+def polynomial(x, coef):
+    result = 0
+    degree = len(coef) - 1
+    for i in range(len(coef)):
+        result += coef[i] * x ** (degree - i)
+    return result
+
 def polinomio_interpolador(x_pontos, y_pontos, epsilon=1e-10):
-    x_pontos = np.array(x_pontos, dtype=float)  # Garantir que x_pontos seja um array de floats
-    y_pontos = np.array(y_pontos, dtype=float)  # Garantir que y_pontos seja um array de floats
     n = len(x_pontos)
     A = np.zeros((n, n))
- 
+
     for i in range(n):
         for j in range(n):
             A[i, j] = x_pontos[i] ** (n - j - 1)
@@ -77,34 +137,30 @@ def polinomio_interpolador(x_pontos, y_pontos, epsilon=1e-10):
     coef = np.linalg.solve(A, y_pontos)
     coef = np.array([0 if abs(c) < epsilon else c for c in coef])
 
-    coef_arredondados = [round(c, 4) for c in coef]
 
-    return coef_arredondados
+    return coef
 
 
 def plot_polinomio_interpolador(coef, x_pontos, y_pontos, epsilon=1e-10):
-    # Calcula os coeficientes do polinômio interpolador
-    # Define a função polinomial com os coeficientes obtidos.
-    # Os coeficientes estão em ordem decrescente:
-    # p(x) = coef[0]*x^(n-1) + coef[1]*x^(n-2) + ... + coef[n-1]
-    def polynomial(x):
-        y = 0
-        n_coef = len(coef)
-        for i, c in enumerate(coef):
-            y += c * (x ** (n_coef - i - 1))
-        return y
-    
-    # Define o intervalo para plotar a curva
+
+    # Converte os pontos para arrays NumPy (caso ainda não sejam)
     x_pontos = np.array(x_pontos, dtype=float)
+    y_pontos = np.array(y_pontos, dtype=float)
+    
+    # Define a função polinomial utilizando np.polyval
+    def polynomial(x):
+        return np.polyval(coef, x)
+    
+    # Define o intervalo para plotar a curva (com margem de 1 unidade)
     x_min, x_max = x_pontos.min() - 1, x_pontos.max() + 1
     x_range = np.linspace(x_min, x_max, 400)
-    y_range = [polynomial(x) for x in x_range]
+    y_range = polynomial(x_range)
     
     # Cria DataFrames para os pontos originais e para a curva do polinômio
     df_pontos = pd.DataFrame({"x": x_pontos, "y": y_pontos})
     df_polynomial = pd.DataFrame({"x": x_range, "y": y_range})
     
-    # Cria o gráfico com os pontos originais
+    # Cria o gráfico dos pontos originais
     fig = px.scatter(
         df_pontos, x="x", y="y",
         title="Polinômio Interpolador",
@@ -113,18 +169,61 @@ def plot_polinomio_interpolador(coef, x_pontos, y_pontos, epsilon=1e-10):
         color_discrete_sequence=["cyan"]
     )
     
-    # Adiciona a linha da curva do polinômio interpolador
-    fig.add_traces(px.line(
-        df_polynomial, x="x", y="y",
-        template="plotly_dark",
-        color_discrete_sequence=["yellow"]
-    ).data)
+    # Adiciona a curva do polinômio
+    fig.add_trace(go.Scatter(
+        x=df_polynomial["x"],
+        y=df_polynomial["y"],
+        mode="lines",
+        line=dict(color="yellow", width=2),
+        name="Polinômio Interpolador"
+    ))
+    
+    # Monta a string da equação do polinômio para anotação
+    termos = []
+    n = len(coef)
+    for i, c in enumerate(coef):
+        power = n - i - 1
+        if abs(c) < epsilon:
+            continue
+        c_str = f"{round(c,4)}"
+        if power == 0:
+            termo = f"{c_str}"
+        elif power == 1:
+            termo = f"{c_str}x"
+        else:
+            termo = f"{c_str}x^{power}"
+        termos.append(termo)
+    equacao = " + ".join(termos)
+    equacao = equacao.replace("+ -", "- ")
+    
+    # Adiciona anotação com a equação do polinômio
+    fig.add_annotation(
+        x=x_min + (x_max - x_min)*0.05,
+        y=np.max(y_range),
+        text=f"f(x) = {equacao}",
+        showarrow=False,
+        font=dict(color="white", size=12),
+        bgcolor="rgba(0,0,0,0.5)"
+    )
+    
+    # Atualiza o layout para melhorar a visualização
+    fig.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        margin=dict(l=50, r=50, t=80, b=50)
+    )
     
     return fig
 
 
+
 def apresentando_interpolacao():
-    graf = go.figure()
+    graf = go.Figure()
     st.title("Interpolação")
     st.markdown("\n\n\n\n")
     
@@ -196,7 +295,8 @@ def apresentando_interpolacao():
             st.error("Não foi possível realizar a interpolação. A tabela contém apenas valores vazios.")
         else:
             # Calcular os coeficientes do polinômio de Newton
-            coef = polinomio_newton(x_pontos, y_pontos)
+            coef, polinomio_str = polinomio_newton(x_pontos, y_pontos)
+            graf = plot_newton_interpolador(coef, x_pontos, y_pontos, polinomio_str)
             st.write(f"Coeficientes do polinômio de Newton: {coef}")
 
             # Construir a string do polinômio
@@ -209,6 +309,8 @@ def apresentando_interpolacao():
 
             st.write("Método que encontra um polinômio que passa exatamente por todos os pontos dados, usando uma combinação de funções base. É eficiente, mas pode ser instável para grandes conjuntos de dados.")
 
+            st.plotly_chart(graf)
+
 
 
     with col2:
@@ -218,6 +320,7 @@ def apresentando_interpolacao():
                 if not df.empty:
                     st.session_state["Dados"] = df
                     st.session_state["lagrange"] = True
+                    st.session_state["newton"] = False
                     st.empty()
                     st.rerun()
 
@@ -229,6 +332,7 @@ def apresentando_interpolacao():
                 if not df.empty:
                     st.session_state["Dados"] = df
                     st.session_state["newton"] = True
+                    st.session_state["lagrange"] = False
                     st.empty()
                     st.rerun()
             st.write("Método que encontra um polinômio que passa exatamente por todos os pontos dados, usando uma combinação de funções base. É eficiente, mas pode ser instável para grandes conjuntos de dados.")
