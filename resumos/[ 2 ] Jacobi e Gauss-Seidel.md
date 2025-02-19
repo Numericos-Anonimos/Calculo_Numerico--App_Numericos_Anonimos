@@ -69,7 +69,6 @@ fig = plot_jacobi(iter_jacobi)
 fig.show()
 ~~~
 
-<grafico>
 
 ---
 
@@ -122,7 +121,7 @@ fig = plot_jacobi_gauss_seidel(iter_jacobi, iter_gauss_seidel)
 fig.show()
 ~~~
 
-<grafico>
+
 
 ---
 

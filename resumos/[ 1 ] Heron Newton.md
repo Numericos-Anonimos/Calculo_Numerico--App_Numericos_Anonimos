@@ -78,8 +78,6 @@ fig = plot_heron(f, raiz, pontos, xmin, xmax)
 fig.show()
 ~~~
 
-<grafico>
-
 ---
 
 ## Vantagens

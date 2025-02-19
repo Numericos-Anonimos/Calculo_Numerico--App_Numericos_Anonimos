@@ -229,8 +229,6 @@ plot_runge_kutta(f, y0, t0, t_end, dt)
 
 ~~~
 
-<grafico>
-
 ---
 
 ## Vantagens e desvantagens

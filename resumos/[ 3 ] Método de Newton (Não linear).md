@@ -181,7 +181,6 @@ plot_newton_intersecao(F, JF, x0, TOL, N)
 
 ~~~
 
-<grafico>
 
 ---
 ## Vantagens e desvantagens
