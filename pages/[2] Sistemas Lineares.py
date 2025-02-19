@@ -93,7 +93,7 @@ def principal():
     if st.button("Calcular"):
         if latex_input:
             latex_str = latex_input[0]
-            st.write("Input original:", latex_str)
+            #st.write("Input original:", latex_str)
             # Remover comandos LaTeX e caracteres extras
             data_str = re.sub(r"\\(mathrm|begin|end){.*?}", "", latex_str)  # Remove comandos LaTeX
             data_str = re.sub(r"[{}]", "", data_str)  # Remove chaves '{}'
