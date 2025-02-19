@@ -23,13 +23,13 @@ def newton_polynomial(x, x_points, coef):
         result += float(coef[i]) * term
     return result
 
-def diferenca(x, y):
+def diferenca(x, y):    
     n = len(x)
     coef = np.copy(y).astype(float)
     for j in range(1, n):
-        for i in range(n - j):
-            coef[i] = (coef[i + 1] - coef[i]) / (x[i + j] - x[i])
-    return coef[:n]
+        for i in range(n - 1, j - 1, -1):
+            coef[i] = (coef[i] - coef[i - 1]) / (x[i] - x[i - j])
+    return coef
 
 def polinomio_newton(x_points, y_points):
     coef = diferenca(x_points, y_points)
