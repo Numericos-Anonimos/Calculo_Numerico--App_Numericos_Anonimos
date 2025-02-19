@@ -9,21 +9,21 @@ def baixar_arquivo(endereço):
 def buscar_contexto(page):
     match page:
         case "Home":
-            return baixar_arquivo('resumos\Home.md')
+            return baixar_arquivo('resumos/Home.md')
         case "Equações de uma Variável":
-            return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos\[ 1 ] Bisseção.md', 'resumos\[ 1 ] Heron Newton.md', 'resumos\[ 1 ] Método das Secantes.md']])
+            return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos/[ 1 ] Bisseção.md', 'resumos/[ 1 ] Heron Newton.md', 'resumos/[ 1 ] Método das Secantes.md']])
         case "Sistemas Lineares":
-            return baixar_arquivo('resumos\[ 2 ] Jacobi e Gauss-Seidel.md')
+            return baixar_arquivo('resumos/[ 2 ] Jacobi e Gauss-Seidel.md')
         case "Sistemas Não Lineares":
-            return baixar_arquivo('resumos\[ 3 ] Método de Newton (Não linear).md')
+            return baixar_arquivo('resumos/[ 3 ] Método de Newton (Não linear).md')
         case "Interpolação":
-            return baixar_arquivo('resumos\[ 4 ] Interpolação.md')
+            return baixar_arquivo('resumos/[ 4 ] Interpolação.md')
         case "Mínimos Quadrados":
-            return baixar_arquivo('resumos\[ 5 ] Mínimos Quadrados.md')
+            return baixar_arquivo('resumos/[ 5 ] Mínimos Quadrados.md')
         case "Integração Numérica":
-            return baixar_arquivo('resumos\[ 6 ] Integração.md')
+            return baixar_arquivo('resumos/[ 6 ] Integração.md')
         case "Problemas de Valor Inicial":
-            return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos\[ 7 ] Método de Euler.md', 'resumos\[ 7 ] Runge Kutta.md']])
+            return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos/[ 7 ] Método de Euler.md', 'resumos/[ 7 ] Runge Kutta.md']])
         case _:
             return "Página não encontrada"
 
