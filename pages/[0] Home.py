@@ -179,22 +179,22 @@ else:
 
     with col1:
         with st.container(border=True):
-            st.button("🔢 **Aproximação de Polinômio**", key="polinomio")
-            st.caption("Aproxima polinômios etc")
+            st.button("🔢 **Equações de Uma Variável**", key="polinomio")
+            st.caption("Aproximação de polinômios")
         with st.container(border=True):
             st.button("📐 **Sistemas Lineares**", key="lineares")
-            st.caption("Resolução Sistemas Lineares")
+            st.caption("Resolução de Sistemas Lineares com Matrizes")
         with st.container(border=True):
-            st.button("📊 **Interpolação etc**", key="interpolacao")
-            st.caption("Interpolação etc")
+            st.button("📊 **Interpolação**", key="interpolacao")
+            st.caption("Construção de Polinômio Interpolador")
 
     with col2:
         with st.container(border=True):
-            st.button("📉 **Derivação**", key="derivacao")
-            st.caption("Derivar funções")
+            st.button("📉 **Problemas de Valor Inicial**", key="derivacao")
+            st.caption("Valor Inicial, EDOS")
         with st.container(border=True):
             st.button("📈 **Integração**", key="integracao")
-            st.caption("Integrar funções")
+            st.caption("Integração Numérica")
 
     st.markdown("---")
 
