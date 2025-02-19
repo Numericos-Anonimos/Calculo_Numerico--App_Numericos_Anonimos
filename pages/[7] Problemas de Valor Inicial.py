@@ -44,7 +44,7 @@ def plot_euler(func, x0, y0, xf, h):
         font=dict(color='white')
     )
     
-    fig.show()
+    st.plotly_chart(fig)
 
 def processar_latex(latex):
     # Remove os primeiros 13 caracteres e o último
@@ -65,7 +65,7 @@ st.logo(
     icon_image=im,
 )
 
-st.title("Derivação")
+st.title("Problemas de Valor Inicial")
 
 st.write("Insira a derivada no seguinte formato:")
 st.latex(r"\frac{d}{dx}(x^2 + 3x + 2)")
