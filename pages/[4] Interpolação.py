@@ -309,7 +309,7 @@ def apresentando_interpolacao():
     with col2:
         # Adicionando o método Lagrange
         with st.container(border=True):
-            if st.button("Interpolador de Lagrange"):
+            if st.button("Interpolador de Lagrange", use_container_width=True):
                 if not df.empty:
                     st.session_state["Dados"] = df
                     st.session_state["lagrange"] = True
@@ -321,7 +321,7 @@ def apresentando_interpolacao():
 
         # Adicionando o método Newton
         with st.container(border=True):
-            if st.button("Interpolador de Newton"):
+            if st.button("Interpolador de Newton", use_container_width=True):
                 if not df.empty:
                     st.session_state["Dados"] = df
                     st.session_state["newton"] = True

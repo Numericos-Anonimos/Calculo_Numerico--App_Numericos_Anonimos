@@ -286,7 +286,7 @@ if "Bissecao" in  st.session_state and st.session_state["Bissecao"]:
     st.plotly_chart(fig, use_container_width=True)
     
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["Bissecao"] = False
         st.empty()
         st.rerun()
@@ -318,7 +318,7 @@ elif "Newton" in  st.session_state and st.session_state["Newton"]:
 
 
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["Bissecao"] = False
         st.empty()
         st.rerun()
@@ -348,7 +348,7 @@ elif "Secante" in  st.session_state and st.session_state["Secante"]:
     st.plotly_chart(fig, use_container_width=True)
 
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["Secante"] = False
         st.empty()
         st.rerun()
@@ -391,7 +391,7 @@ elif "sistemas_lineares" in  st.session_state and st.session_state["sistemas_lin
     st.write(f"A = {A} / b = {b} / x0 = {x0}")
     st.plotly_chart(fig_gauss_seidel, use_container_width=True)
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["sistemas_lineares"] = False
         st.empty()
         st.rerun()
@@ -428,7 +428,7 @@ elif "interpol" in  st.session_state and st.session_state["interpol"] :
 
 
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["interpol"] = False
         st.empty()
         st.rerun()
@@ -440,7 +440,7 @@ elif "minimos" in  st.session_state and st.session_state["minimos"] :
 
     read_file()
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["integra"] = False
         st.empty()
         st.rerun()
@@ -453,7 +453,7 @@ elif "integra" in  st.session_state and st.session_state["integra"] :
 
     read_file()
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["integra"] = False
         st.empty()
         st.rerun()
@@ -465,7 +465,7 @@ elif "edo1" in  st.session_state and st.session_state["edo1"] :
 
     read_file()
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["edo1"] = False
         st.empty()
         st.rerun()
@@ -477,7 +477,7 @@ elif "edo2" in  st.session_state and st.session_state["edo2"] :
 
     read_file()
 
-    if st.button("Voltar"):
+    if st.button("Voltar", use_container_width=True):
         st.session_state["edo1"] = False
         st.empty()
         st.rerun()

@@ -90,7 +90,7 @@ def principal():
     # Entrada via MathLive
     latex_input = mathfield(title="", value=r"\mathrm{\begin{pmatrix}2 & 8 & 9 & 7\\ 1 & 2 & 3 & 4\\ 5 & 6 & 7 & 9\end{pmatrix}}", mathml_preview=True)
     # Botão de calcular
-    if st.button("Calcular"):
+    if st.button("Calcular", use_container_width=True):
         if latex_input:
             latex_str = latex_input[0]
             #st.write("Input original:", latex_str)

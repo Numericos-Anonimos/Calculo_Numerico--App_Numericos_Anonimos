@@ -54,7 +54,7 @@ with abas["Regressão Linear"]:
 
     st.write("## Calculadora")
     df = st.data_editor(pd.DataFrame(columns=['x', 'y']), use_container_width=True, num_rows="dynamic")
-    if st.button("Calcular"):
+    if st.button("Calcular", use_container_width=True):
         x = df['x'].values.astype(float)
         y = df['y'].values.astype(float)
         a_ = a(x, y)
@@ -109,7 +109,7 @@ with abas["Modelo Exponencial"]:
 
     st.write("## Calculadora")
     df = st.data_editor(pd.DataFrame(columns=['x', 'y']), use_container_width=True, num_rows="dynamic", key="df_exponencial")
-    if st.button("Calcular", key="btn_exponencial"):
+    if st.button("Calcular", key="btn_exponencial", use_container_width=True):
         x = df['x'].values.astype(float)
         y = df['y'].values.astype(float)
         ln_y = np.log(y)
@@ -180,7 +180,7 @@ with abas["Modelo Polinomial"]:
     st.write("## Calculadora")
     grau = st.multiselect("Grau do polinômio", [1, 2, 3, 4, 5], default=[2])    
     df = st.data_editor(pd.DataFrame(columns=['x', 'y']), use_container_width=True, num_rows="dynamic", key="df_polinomial")
-    if st.button("Calcular", key="btn_polinomial"):
+    if st.button("Calcular", key="btn_polinomial", use_container_width=True):
         x = df['x'].values.astype(float)
         y = df['y'].values.astype(float)
         coefs = []
