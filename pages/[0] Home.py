@@ -8,11 +8,6 @@ import sympy as sp
 
 st.session_state['current_page'] = "Home"
 
-st.logo(
-    "src/img/unifesp_icon.ico",
-    link="https://portal.unifesp.br/",
-    icon_image="src/img/unifesp_icon.ico",
-)
 
 def bisseccao(f, ini, fim):
         if f(ini) * f(fim) >= 0:
@@ -464,7 +459,7 @@ elif "integra" in  st.session_state and st.session_state["integra"] :
         st.rerun()
 elif "edo1" in  st.session_state and st.session_state["edo1"] :
     def read_file():
-        with open('resumos/[ 8 ] Método de Euler.md', 'r', encoding="utf-8") as file:
+        with open('resumos/[ 7 ] Método de Euler.md', 'r', encoding="utf-8") as file:
             data = file.read()
         st.write(data)
 
@@ -476,7 +471,7 @@ elif "edo1" in  st.session_state and st.session_state["edo1"] :
         st.rerun()
 elif "edo2" in  st.session_state and st.session_state["edo2"] :
     def read_file():
-        with open('resumos/[ 8 ] Runge Kutta.md', 'r', encoding="utf-8") as file:
+        with open('resumos/[ 7 ] Runge Kutta.md', 'r', encoding="utf-8") as file:
             data = file.read()
         st.write(data)
 

@@ -103,9 +103,6 @@ Essa forma é vantajosa porque permite a **adição de novos pontos** sem recalc
 import numpy as np
 import plotly.graph_objects as go
 
-
-
-
 x = np.array([1, 2, 3, 4], dtype=float)
 y = np.array([2, 3, 5, 4], dtype=float)
 coef = polinomio_newton(x, y)

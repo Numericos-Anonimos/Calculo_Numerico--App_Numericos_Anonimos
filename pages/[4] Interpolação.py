@@ -6,14 +6,7 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
-
 st.session_state['current_page'] = "Interpolação"
-
-st.logo(
-    "src/img/unifesp_icon.ico",
-    link="https://portal.unifesp.br/",
-    icon_image="src/img/unifesp_icon.ico",
-)
 
 #Newton
 import numpy as np
@@ -251,7 +244,7 @@ def apresentando_interpolacao():
         )
 
         # Exibindo a tabela
-        df = st.data_editor(df, num_rows="dynamic")
+        df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
 
     if "lagrange" in st.session_state and st.session_state["lagrange"] and "Dados" in st.session_state:
         st.markdown("---")
