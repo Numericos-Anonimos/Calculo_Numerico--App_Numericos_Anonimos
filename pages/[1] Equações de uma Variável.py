@@ -7,6 +7,7 @@ import numpy as np
 import plotly.graph_objects as go
 import pandas as pd
 
+st.session_state['current_page'] = "Equações de uma Variável"
 
 # Função para limpar o LaTeX
 def limpar_latex(latex):

@@ -6,6 +6,8 @@ import sympy as sp
 import numpy as np
 import plotly.graph_objects as go
 
+st.session_state['current_page'] = "Problemas de Valor Inicial"
+
 def euler(func, x0, y0, xf, h):
     n = int((xf - x0) / h)
     xs = np.linspace(x0, xf, n+1)

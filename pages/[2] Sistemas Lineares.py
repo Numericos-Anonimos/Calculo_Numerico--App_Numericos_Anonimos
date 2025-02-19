@@ -7,6 +7,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
+st.session_state['current_page'] = "Sistemas Lineares"
+
 def criar_dataframe(iterations, metodo):
     data = []
     for k, x in enumerate(iterations):

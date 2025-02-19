@@ -6,6 +6,8 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
+st.session_state['current_page'] = "Integração Numérica"
+
 def corrigir_sintaxe(latex):
     """
     Corrige a sintaxe do LaTeX para o formato esperado:

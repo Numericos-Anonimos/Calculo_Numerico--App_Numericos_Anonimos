@@ -5,12 +5,7 @@ from PIL import Image
 import plotly.express as px
 import numpy as np
 
-im = Image.open("src/img/unifesp_icon.ico")
-st.set_page_config(
-    page_title="Numéricos Anônimos",
-    page_icon=im,
-    layout="wide",
-)
+st.session_state['current_page'] = "Home"
 
 st.logo(
     "src/img/unifesp_icon.ico",
