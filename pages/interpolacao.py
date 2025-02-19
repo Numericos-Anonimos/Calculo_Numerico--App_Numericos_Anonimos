@@ -170,6 +170,7 @@ def apresentando_interpolacao():
         else:
             # Calcular o polinômio interpolador
             coef = polinomio_interpolador(x_pontos, y_pontos)
+            graf = plot_polinomio_interpolador(coef, x_pontos, y_pontos)
             st.write(f"Coeficientes do polinômio interpolador: {coef}")
 
             # Exibir o polinômio resultante
@@ -181,6 +182,8 @@ def apresentando_interpolacao():
             st.write(f"Polinômio interpolador: {polinomio}")
 
             st.write("Método incremental que usa diferenças divididas para construir o polinômio. Permite adicionar pontos sem recalcular os anteriores, sendo mais eficiente para novos dados.")
+
+            st.plotly_chart(graf)
 
     elif "newton" in st.session_state and st.session_state["newton"] and "Dados" in st.session_state:
         st.markdown("---")
