@@ -245,6 +245,7 @@ def apresentando_interpolacao():
 
         # Exibindo a tabela
         df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+        
 
     if "lagrange" in st.session_state and st.session_state["lagrange"] and "Dados" in st.session_state:
         st.markdown("---")

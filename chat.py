@@ -7,22 +7,22 @@ def baixar_arquivo(endereço):
         return file.read()
 
 def buscar_contexto(page):
-    match page:
-        case "Home":
+    match page.lower():
+        case "home":
             return baixar_arquivo('resumos/Home.md')
-        case "Equações de uma Variável":
+        case "equações de uma variável":
             return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos/[ 1 ] Bisseção.md', 'resumos/[ 1 ] Heron Newton.md', 'resumos/[ 1 ] Método das Secantes.md']])
-        case "Sistemas Lineares":
+        case "sistemas lineares":
             return baixar_arquivo('resumos/[ 2 ] Jacobi e Gauss-Seidel.md')
-        case "Sistemas Não Lineares":
+        case "sistemas não lineares":
             return baixar_arquivo('resumos/[ 3 ] Método de Newton (Não linear).md')
-        case "Interpolação":
+        case "interpolação":
             return baixar_arquivo('resumos/[ 4 ] Interpolação.md')
-        case "Mínimos Quadrados":
+        case "mínimos quadrados":
             return baixar_arquivo('resumos/[ 5 ] Mínimos Quadrados.md')
-        case "Integração Numérica":
+        case "integração numérica":
             return baixar_arquivo('resumos/[ 6 ] Integração.md')
-        case "Problemas de Valor Inicial":
+        case "problemas de valor inicial":
             return '\n\n\n'.join([baixar_arquivo(i) for i in ['resumos/[ 7 ] Método de Euler.md', 'resumos/[ 7 ] Runge Kutta.md']])
         case _:
             return "Página não encontrada"

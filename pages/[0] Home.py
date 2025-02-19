@@ -265,6 +265,7 @@ def format_function_markdown(f, var_name='x'):
 
 # Verificar se a chave da página "Bisseção" foi marcada na sessão
 if "Bissecao" in  st.session_state and st.session_state["Bissecao"]:
+    st.session_state['current_page'] = "Equações de uma Variável"
     def read_file():
         with open('resumos/[ 1 ] Bisseção.md', 'r', encoding="utf-8") as file:
             data = file.read()
@@ -288,10 +289,12 @@ if "Bissecao" in  st.session_state and st.session_state["Bissecao"]:
 
     if st.button("Voltar", use_container_width=True):
         st.session_state["Bissecao"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
 
 elif "Newton" in  st.session_state and st.session_state["Newton"]:
+    st.session_state['current_page'] = "Equações de Uma Variável"
     def read_file():
         with open('resumos/[ 1 ] Heron Newton.md', 'r', encoding="utf-8") as file:
             data = file.read()
@@ -316,13 +319,14 @@ elif "Newton" in  st.session_state and st.session_state["Newton"]:
     st.write(f"Função plotada: {format_function_markdown(f)}")
     st.plotly_chart(fig, use_container_width=True)
 
-
-
     if st.button("Voltar", use_container_width=True):
-        st.session_state["Bissecao"] = False
+        st.session_state["Newton"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
+
 elif "Secante" in  st.session_state and st.session_state["Secante"]:
+    st.session_state['current_page'] = "Equações de Uma Variável"
     def read_file():
         with open('resumos/[ 1 ] Método das Secantes.md', 'r', encoding="utf-8") as file:
             data = file.read()
@@ -346,13 +350,14 @@ elif "Secante" in  st.session_state and st.session_state["Secante"]:
     st.title("Visualização do Método das Secantes: ")
     st.write(f"Função plotada: {format_function_markdown(f)}")
     st.plotly_chart(fig, use_container_width=True)
-
-
     if st.button("Voltar", use_container_width=True):
         st.session_state["Secante"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
+
 elif "sistemas_lineares" in  st.session_state and st.session_state["sistemas_lineares"]:
+    st.session_state['current_page'] = "Sistemas Lineares"
     def read_file():
         with open('resumos/[ 2 ] Jacobi e Gauss-Seidel.md', 'r', encoding="utf-8") as file:
             data = file.read()
@@ -393,11 +398,13 @@ elif "sistemas_lineares" in  st.session_state and st.session_state["sistemas_lin
 
     if st.button("Voltar", use_container_width=True):
         st.session_state["sistemas_lineares"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
 
     
 elif "interpol" in  st.session_state and st.session_state["interpol"] :
+    st.session_state['current_page'] = "Interpolação"
     def read_file():
         with open('resumos/[ 4 ] Interpolação.md', 'r', encoding="utf-8") as file:
             data = file.read()
@@ -419,66 +426,69 @@ elif "interpol" in  st.session_state and st.session_state["interpol"] :
     st.write(f"Pontos de entrada: x = {x}, y = {y}")
     st.plotly_chart(fig, use_container_width=True)
 
-
-
-
-
-
-
-
-
-
     if st.button("Voltar", use_container_width=True):
         st.session_state["interpol"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
+
 elif "minimos" in  st.session_state and st.session_state["minimos"] :
+    st.session_state['current_page'] = "Mínimos Quadrados"
     def read_file():
-        with open('resumos/[ 7 ] Integração.md', 'r', encoding="utf-8") as file:
-            data = file.read()
+        with open('resumos/[ 5 ] Mínimos Quadrados.md', 'r', encoding="utf-8") as file:
+            data = file.read().replace("<grafico>", "")
         st.write(data)
 
     read_file()
 
     if st.button("Voltar", use_container_width=True):
-        st.session_state["integra"] = False
+        st.session_state["minimos"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
 
-elif "integra" in  st.session_state and st.session_state["integra"] :
+elif "integra" in  st.session_state and st.session_state["integra"]:
+    st.session_state['current_page'] = "Integração Numérica"
     def read_file():
-        with open('resumos/[ 7 ] Integração.md', 'r', encoding="utf-8") as file:
+        with open('resumos/[ 6 ] Integração.md', 'r', encoding="utf-8") as file:
             data = file.read()
-        st.write(data)
+        st.write(data, unsafe_allow_html=True)
 
     read_file()
 
     if st.button("Voltar", use_container_width=True):
         st.session_state["integra"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
+
 elif "edo1" in  st.session_state and st.session_state["edo1"] :
+    st.session_state['current_page'] = "Problemas de Valor Inicial"
     def read_file():
         with open('resumos/[ 7 ] Método de Euler.md', 'r', encoding="utf-8") as file:
-            data = file.read()
+            data = file.read().replace("<grafico>", "")
         st.write(data)
 
     read_file()
 
     if st.button("Voltar", use_container_width=True):
         st.session_state["edo1"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
+
 elif "edo2" in  st.session_state and st.session_state["edo2"] :
+    st.session_state['current_page'] = "Problemas de Valor Inicial"
     def read_file():
         with open('resumos/[ 7 ] Runge Kutta.md', 'r', encoding="utf-8") as file:
-            data = file.read()
+            data = file.read().replace("<grafico>", "")
         st.write(data)
 
     read_file()
 
     if st.button("Voltar", use_container_width=True):
-        st.session_state["edo1"] = False
+        st.session_state["edo2"] = False
+        st.session_state["current_page"] = "Home"
         st.empty()
         st.rerun()
 else:
@@ -562,11 +572,6 @@ else:
         st.session_state["sistemas_lineares"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
     
-    st.markdown("<small>Métodos para resolver Sistemas Não Lineares:</small>", unsafe_allow_html=True)
-    if st.button("**Sistemas Não Lineares**", use_container_width=True):
-        st.session_state["sistemas_nao_lineares"] = True  # Atualiza o estado para marcar a página como clicada
-        st.rerun()  # Garante que a página seja recarregada com a nova página
-
     st.markdown("<small>Métodos de Interpolação:</small>", unsafe_allow_html=True)
     if st.button("**Interpolação**", use_container_width=True):
         st.session_state["interpol"] = True  # Atualiza o estado para marcar a página como clicada

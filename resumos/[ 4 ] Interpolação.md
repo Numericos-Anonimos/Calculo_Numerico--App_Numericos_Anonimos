@@ -92,9 +92,7 @@ $$P_n(x) = a_0 \;+\; a_1 (x - x_0) \;+\; a_2 (x - x_0)(x - x_1) \;+\; \dots \;+\
 
 onde os coeficientes \( a_i \) são calculados a partir das **diferenças divididas**:
 
-$$a_0 = y_0, \quad
-a_1 = \frac{y_1 - y_0}{x_1 - x_0}, \quad
-a_2 = \frac{\frac{y_2 - y_1}{x_2 - x_1} - \frac{y_1 - y_0}{x_1 - x_0}}{x_2 - x_0}, \quad \text{etc.}$$
+$$a_0 = y_0, \quad a_1 = \frac{y_1 - y_0}{x_1 - x_0}, \quad a_2 = \frac{\frac{y_2 - y_1}{x_2 - x_1} - \frac{y_1 - y_0}{x_1 - x_0}}{x_2 - x_0}, \quad \text{etc.}$$
 
 Essa forma é vantajosa porque permite a **adição de novos pontos** sem recalcular todo o polinômio do zero, aproveitando a estrutura de diferenças divididas já computada.
 

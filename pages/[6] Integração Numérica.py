@@ -190,10 +190,10 @@ def principal():
     # --- Interface Streamlit ---
     st.title("Integração Numérica")
     st.write("Insira a integral no formato:")
-    st.latex(r"\int_{a}^{b}\left(f(x)\right) dx")
+    st.latex(r"\int_0^3\left(\frac{1}{4+\sin\left(20x\right)}\right)dx")
 
     # Entrada via MathLive
-    latex_input = mathfield(title="", value=r"\int_{0}^{1}\left(x\right) dx", mathml_preview=True)
+    latex_input = mathfield(title="", value=r"\int_0^3\left(\frac{1}{4+\sin\left(20x\right)}\right)dx", mathml_preview=True)
     n = st.slider("Número de subdivisões", min_value=2, max_value=100, value=30, step=2)
     # Botão de calcular
     if st.button("Calcular", use_container_width=True):
