@@ -183,10 +183,10 @@ else:
             st.caption("Aproximação de polinômios")
         with st.container(border=True):
             st.button("📐 **Sistemas Lineares**", key="lineares")
-            st.caption("Resolução Sistemas Lineares com Matrizes")
+            st.caption("Resolução de Sistemas Lineares com Matrizes")
         with st.container(border=True):
             st.button("📊 **Interpolação**", key="interpolacao")
-            st.caption("Interpolação")
+            st.caption("Construção de Polinômio Interpolador")
 
     with col2:
         with st.container(border=True):
