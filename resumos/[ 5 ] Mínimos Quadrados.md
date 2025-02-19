@@ -77,6 +77,7 @@ fig = plotar_regressao_linear(x, y, a_, b_, 0, 8, 100)
 fig.show()
 ~~~
 
+<grafico>
 
 ## Modelos Exponenciais
 
@@ -144,6 +145,8 @@ fig = plotar_modelo_exponencial(x, y, a, b, -1, 6, 100)
 fig.show()
 ~~~
 
+<grafico>
+
 ## Modelo Polinomial
 
 Podemos ajustar um modelo polinomial de grau $k$ aos dados, minimizando a soma dos quadrados dos resíduos utilizando a notação matricial:
@@ -210,3 +213,4 @@ fig = plotar_multiplos_polinomios_interativo(x, y, [(coef_grau1, 'Grau 1'), (coe
 fig.show()
 ~~~
 
+<grafico>
