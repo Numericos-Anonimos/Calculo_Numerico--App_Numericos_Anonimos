@@ -19,6 +19,32 @@ def criar_dataframe(iterations, metodo):
             })
     return pd.DataFrame(data)
 
+def gauss_seidel_solver(A, b, x0, tol=1e-6, max_iter=100):
+    n = len(b)
+    x = x0.copy()
+    iterations = [x.copy()]
+    for k in range(max_iter):
+        x_old = x.copy()
+        for i in range(n):
+            s1 = sum(A[i, j] * x[j] for j in range(i))
+            s2 = sum(A[i, j] * x_old[j] for j in range(i + 1, n))
+            x[i] = (b[i] - s1 - s2) / A[i, i]
+        iterations.append(x.copy())
+        if np.linalg.norm(x - x_old, ord=np.inf) < tol:
+            break
+    return x, iterations
+
+def criar_dataframe(iterations, metodo):
+    data = []
+    for k, x in enumerate(iterations):
+        for i, xi in enumerate(x):
+            data.append({
+                "Iteração": k, "Variável": f"$x_{{{i+1}}}$",
+                "Valor": xi, "Método": metodo
+            })
+    return pd.DataFrame(data)
+
+
 def jacobi_solver(A, b, x0, tol=1e-6, max_iter=100):
     n = len(b)
     x = x0.copy()
@@ -62,12 +88,12 @@ def principal():
     st.latex(r"\mathrm{\begin{pmatrix}A11 & A12 & A13 & B1\\ A21 & A22 & A23 & B2\\ A31 & A32 & A33 & B3\end{pmatrix}}")
 
     # Entrada via MathLive
-    latex_input = mathfield(title="", value=r"\mathrm{\begin{pmatrix}1 & 2 & 3 & 4\\ 1 & 2 & 3 & 4\\1 & 2 & 3 & 4\end{pmatrix}}", mathml_preview=True)
+    latex_input = mathfield(title="", value=r"\mathrm{\begin{pmatrix}2 & 8 & 9 & 7\\ 1 & 2 & 3 & 4\\ 5 & 6 & 7 & 9\end{pmatrix}}", mathml_preview=True)
     # Botão de calcular
     if st.button("Calcular"):
         if latex_input:
             latex_str = latex_input[0]
-            st.write("Input original:", latex_str)
+            #st.write("Input original:", latex_str)
             # Remover comandos LaTeX e caracteres extras
             data_str = re.sub(r"\\(mathrm|begin|end){.*?}", "", latex_str)  # Remove comandos LaTeX
             data_str = re.sub(r"[{}]", "", data_str)  # Remove chaves '{}'
@@ -81,12 +107,13 @@ def principal():
             vetor = np.array([row[-1] for row in rows])  # Última coluna
 
             # Exibir resultados
-            x0 = [0 for i in vetor]
+            x0 = np.array([0 for i in vetor])
             st.write(matriz)
             st.write(vetor)
             st.write(x0)
-            x_jacobi, iter_jacobi = jacobi_solver(matriz, vetor, x0, tol=1e-6, max_iter=100)
-            fig = plot_jacobi_gauss_seidel(iter_jacobi)
+            x_gauss_seidel, iter_gauss_seidel = gauss_seidel_solver(matriz, vetor, x0, tol=1e-6, max_iter=25)
+            x_jacobi, iter_jacobi = jacobi_solver(matriz, vetor, x0, tol=1e-6, max_iter=25)
+            fig = plot_jacobi_gauss_seidel(iter_jacobi, iter_gauss_seidel)
             st.plotly_chart(fig)
 
         else:

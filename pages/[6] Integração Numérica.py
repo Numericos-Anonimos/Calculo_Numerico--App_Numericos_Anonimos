@@ -135,7 +135,7 @@ def plot_trapezoidal_composta_interactive(f, a, b, n):
 
 def principal():
     # --- Interface Streamlit ---
-    st.title("Calculadora de Integrais")
+    st.title("Integração Numérica")
     st.write("Insira a integral no formato:")
     st.latex(r"\int_{a}^{b}\left(f(x)\right) dx")
 

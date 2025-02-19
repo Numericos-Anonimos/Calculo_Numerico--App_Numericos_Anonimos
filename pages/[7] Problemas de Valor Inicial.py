@@ -44,7 +44,7 @@ def plot_euler(func, x0, y0, xf, h):
         font=dict(color='white')
     )
     
-    fig.show()
+    st.plotly_chart(fig)
 
 def processar_latex(latex):
     # Remove os primeiros 13 caracteres e o último
@@ -65,20 +65,26 @@ st.logo(
     icon_image=im,
 )
 
-st.title("Derivação")
+st.title("Problemas de Valor Inicial")
 
-st.write("Insira a derivada no seguinte formato:")
+st.write("Insira a derivada no seguinte formato (incluindo os parênteses no início e no fim):")
 st.latex(r"\frac{d}{dx}(x^2 + 3x + 2)")
 
 # Usando mathfield para entrada de LaTeX
 latex_input = mathfield(title="", value=r"\frac{d}{dx}(x^2 + 3x + 2)", mathml_preview=True)
+
+
+gx0 = st.slider("x0 (Ponto inicial)", min_value=0.0, max_value=10.0, value=0.0, step=0.1)
+gy0 = st.slider("y0 (Valor inicial de y)", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
+gxf = st.slider("xf (Ponto final)", min_value=1.0, max_value=20.0, value=10.0, step=0.1)
+gh = st.slider("h (Tamanho do passo)", min_value=0.01, max_value=1.0, value=0.1, step=0.01)
 
 # Botão para calcular
 if st.button("Calcular"):
     if latex_input:  # Verificando se há entrada
         latex_input_str = latex_input[0]  # Acessando a string do LaTeX
         
-        st.write(f"Equação inserida: {latex_input_str}")  # Exibir a entrada para depuração
+        #st.write(f"Equação inserida: {latex_input_str}")  # Exibir a entrada para depuração
         
         try:
             # Processar LaTeX para obter a função
@@ -86,7 +92,7 @@ if st.button("Calcular"):
             
             if func_str:
                 # Exibir a função processada
-                st.write("Função processada:", func_str)
+                #st.write("Função processada:", func_str)
                 # Usar sympy para transformar a string em uma expressão simbólica
                 x, y = sp.symbols('x y')
                 expressao = sp.sympify(func_str)
@@ -95,18 +101,17 @@ if st.button("Calcular"):
                 f_func = sp.lambdify((x, y), expressao, 'numpy')
 
                 # Visualizar a função
-                st.write(f"Equação processada: {func_str}")
-                st.latex(f"${func_str}$")
+                #st.write(f"Equação processada: {func_str}")
+                #st.latex(f"${func_str}$")
 
                 # Exemplo de uso do método de Euler para gráficos
-                x0, y0, xf, h = 0, 1, 10, 0.1  # Parâmetros do método de Euler
-                plot_euler(f_func, x0, y0, xf, h)
+                plot_euler(f_func, gx0, gy0, gxf, gh)
             else:
                 st.write("Não foi possível extrair coeficientes.")
         except Exception as e:
             st.write(f"Erro ao processar a equação: {e}")
     else:
-        st.write("Por favor, insira um polinômio.")
+        st.write("Por favor, insira uma equação válida.")
 
 # Adicionando CSS para personalizar o botão
 st.markdown("""

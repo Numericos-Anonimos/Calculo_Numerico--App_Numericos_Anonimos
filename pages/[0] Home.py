@@ -493,22 +493,25 @@ else:
 
     with col1:
         with st.container(border=True):
-            st.button("🔢 **Aproximação de Polinômio**", key="polinomio")
-            st.caption("Aproxima polinômios etc")
+            st.page_link("pages/[1] Equações de uma Variável.py", label="🔢 **Equações de Uma Variável**")
+            st.caption("Aproximação de polinômios")
         with st.container(border=True):
-            st.button("📐 **Sistemas Lineares**", key="lineares")
-            st.caption("Resolução Sistemas Lineares")
+            st.page_link("pages/[2] Sistemas Lineares.py", label="📐 **Sistemas Lineares**")
+            st.caption("Resolução de Sistemas Lineares com Matrizes")
         with st.container(border=True):
-            st.button("📊 **Interpolação etc**", key="interpolacao")
-            st.caption("Interpolação etc")
+            st.page_link("pages/[4] Interpolação.py", label="📊 **Interpolação**")
+            st.caption("Construção de Polinômio Interpolador")
 
     with col2:
         with st.container(border=True):
-            st.button("📉 **Derivação**", key="derivacao")
-            st.caption("Derivar funções")
+            st.page_link("pages/[7] Problemas de Valor Inicial.py", label="📉 **Problemas de Valor Inicial**")
+            st.caption("Valor Inicial, EDOS")
         with st.container(border=True):
-            st.button("📈 **Integração**", key="integracao")
-            st.caption("Integrar funções")
+            st.page_link("pages/[6] Integração Numérica.py", label="📈 **Integração Numérica**")
+            st.caption("Integração através de métodos numéricos")
+        with st.container(border=True):
+            st.page_link("pages/[5] Mínimos Quadrados.py", label="📉 **Mínimos Quadrados**")
+            st.caption("Cálculo de Mínimos Quadrados")
 
     st.markdown("---")
 
