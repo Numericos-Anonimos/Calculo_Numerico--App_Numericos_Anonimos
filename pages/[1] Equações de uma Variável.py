@@ -470,6 +470,12 @@ def principal():
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
                     st.plotly_chart(st.session_state['grafico'])
 
+                    if st.button("Ver mais"):
+                        st.session_state["Bissecao"] = True
+                        
+
+
+
             
             if "metodo_newton" in st.session_state and st.session_state["metodo_newton"] and "encontrou_resultado" in st.session_state and st.session_state["encontrou_resultado"]:
                 st.markdown("---")

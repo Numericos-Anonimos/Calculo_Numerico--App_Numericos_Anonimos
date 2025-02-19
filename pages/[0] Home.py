@@ -396,31 +396,26 @@ else:
         st.session_state["Secante"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<small>Métodos para resolver Sistemas Lineares:</small>", unsafe_allow_html=True)
     if st.button("**Sistemas Lineares**", use_container_width=True):
         st.session_state["sistemas_lineares"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<small>Métodos de Interpolação:</small>", unsafe_allow_html=True)
     if st.button("**Interpolação**", use_container_width=True):
         st.session_state["interpol"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<small>Métodos dos Mínimos Quadrados:</small>", unsafe_allow_html=True)
     if st.button("**Mínimos Quadrados**", use_container_width=True):
         st.session_state["minimos"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<small>Métodos de Integração:</small>", unsafe_allow_html=True)
     if st.button("**Integração**", use_container_width=True):
         st.session_state["integra"] = True  # Atualiza o estado para marcar a página como clicada
         st.rerun()  # Garante que a página seja recarregada com a nova página
 
-    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<small>Métodos para resolução de EDOs:</small>", unsafe_allow_html=True)
     if st.button("**Método de Euler**", use_container_width=True):
         st.session_state["edo1"] = True  # Atualiza o estado para marcar a página como clicada
