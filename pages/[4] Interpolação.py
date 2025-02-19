@@ -5,14 +5,12 @@ from PIL import Image
 import numpy as np
 import plotly.graph_objects as go
 
-
-
-im = Image.open("src/img/unifesp_icon.ico")
+st.session_state['current_page'] = "Interpolação"
 
 st.logo(
-    im,
+    "src/img/unifesp_icon.ico",
     link="https://portal.unifesp.br/",
-    icon_image=im,
+    icon_image="src/img/unifesp_icon.ico",
 )
 
 #Newton
