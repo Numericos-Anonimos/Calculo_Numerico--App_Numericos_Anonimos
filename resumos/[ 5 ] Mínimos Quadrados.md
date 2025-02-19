@@ -213,3 +213,4 @@ fig = plotar_multiplos_polinomios_interativo(x, y, [(coef_grau1, 'Grau 1'), (coe
 fig.show()
 ~~~
 
+<grafico>

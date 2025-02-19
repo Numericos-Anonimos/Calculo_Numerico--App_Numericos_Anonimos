@@ -212,6 +212,8 @@ plot_simpson_composta_interactive(f, 0, 3, 30)
 
 ~~~
 
+<grafico>
+
 ---
 ## 3. Comparação e Considerações sobre o Erro
 

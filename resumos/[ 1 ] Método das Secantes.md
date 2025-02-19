@@ -92,7 +92,7 @@ fig = plot_secantes(f, raiz, pontos, xmin, xmax)
 fig.show()
 ~~~
 
-
+<grafico>
 
 ---
 

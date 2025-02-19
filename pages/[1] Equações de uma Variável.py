@@ -470,10 +470,6 @@ def principal():
                     st.write(f"Pontos intermediários: {st.session_state['pontos']}")
                     st.plotly_chart(st.session_state['grafico'])
 
-                    if st.button("Ver mais"):
-                        st.session_state["Bissecao"] = True
-                        
-
 
 
             
