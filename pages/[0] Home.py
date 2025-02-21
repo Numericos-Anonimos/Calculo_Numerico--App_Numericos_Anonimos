@@ -502,7 +502,7 @@ else:
                         - João Victor Assaoka Ribeiro / <a href="https://linkedin.com/in/assaoka" target="_blank">LinkedIn</a> / <a href="https://github.com/Assaoka" target="_blank">Github</a>
                     </div>
                     <div class="contact-item">
-                        - Lucas Castelani Gouveia / <a href="https://linkedin.com/in/lucascastelani" target="_blank">LinkedIn</a> / <a href="https://github.com/LucasCG18" target="_blank">Github</a>
+                        - Lucas Castelani Gouveia / <a href="https://www.linkedin.com/in/lucas-castelani-gouveia-422a8a224/" target="_blank">LinkedIn</a> / <a href="https://github.com/LucasCG18" target="_blank">Github</a>
                     </div>
                     <div class="contact-item">
                         - Lucas Molinari / <a href="https://linkedin.com/in/lucas-molinari-dev" target="_blank">LinkedIn</a> / <a href="https://github.com/molhinari" target="_blank">Github</a>
