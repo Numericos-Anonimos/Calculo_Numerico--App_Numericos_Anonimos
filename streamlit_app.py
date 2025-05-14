@@ -1,5 +1,14 @@
 import streamlit as st
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 st.set_page_config(
     page_title="NumTutor",
     page_icon= "src/img/unifesp_icon.ico",

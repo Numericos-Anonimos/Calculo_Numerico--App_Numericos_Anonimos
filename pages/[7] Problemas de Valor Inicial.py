@@ -11,6 +11,15 @@ import plotly.graph_objects as go
 
 st.session_state['current_page'] = "Problemas de Valor Inicial"
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 def euler(func, x0, y0, xf, h):
     n = int((xf - x0) / h)
     xs = np.linspace(x0, xf, n+1)

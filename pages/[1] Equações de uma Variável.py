@@ -9,6 +9,15 @@ import pandas as pd
 
 st.session_state['current_page'] = "Equações de uma Variável"
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # Função para limpar o LaTeX
 def limpar_latex(latex):
     from latex2sympy2 import latex2sympy

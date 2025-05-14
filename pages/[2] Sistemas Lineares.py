@@ -9,6 +9,15 @@ import plotly.express as px
 
 st.session_state['current_page'] = "Sistemas Lineares"
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 def criar_dataframe(iterations, metodo):
     data = []
     for k, x in enumerate(iterations):

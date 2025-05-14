@@ -1,8 +1,16 @@
 import numpy as np
 import pandas as pd
 import plotly.express as px
-
 import streamlit as st
+
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 st.session_state['current_page'] = "Mínimos Quadrados"
 abas = ["Regressão Linear", "Modelo Exponencial", "Modelo Polinomial"]
 abas = {i: j for i, j in zip(abas, st.tabs(abas))}

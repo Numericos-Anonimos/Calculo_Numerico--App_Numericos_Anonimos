@@ -8,6 +8,16 @@ import plotly.express as px
 
 st.session_state['current_page'] = "Integração Numérica"
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
+
 def corrigir_sintaxe(latex):
     if latex.startswith(r'\mathrm{') and latex.endswith('}'):
         latex = latex[len(r'\mathrm{'):-1]

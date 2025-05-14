@@ -8,12 +8,17 @@ import plotly.express as px
 
 st.session_state['current_page'] = "Interpolação"
 
-#Newton
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
+
+
+#Newton
 def newton_polynomial(x, x_points, coef):
     x_points = np.array(x_points, dtype=float)
     result = float(coef[0])
