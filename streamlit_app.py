@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Numéricos Anônimos",
+    page_title="NumTutor",
     page_icon= "src/img/unifesp_icon.ico",
     layout="wide",
 )

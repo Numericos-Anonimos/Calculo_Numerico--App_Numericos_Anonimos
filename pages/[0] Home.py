@@ -12,6 +12,15 @@ from methods import *
 
 st.session_state['current_page'] = "Home"
 
+st.markdown("""
+    <style>
+        a[href^="https://github.com"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # Verificar se a chave da página "Bisseção" foi marcada na sessão
 if "Bissecao" in  st.session_state and st.session_state["Bissecao"]:
     st.session_state['current_page'] = "Equações de uma Variável"
@@ -335,7 +344,7 @@ elif "edo2" in  st.session_state and st.session_state["edo2"] :
         st.empty()
         st.rerun()
 else:
-    st.title("Numéricos Anônimos")
+    st.title("NumTutor")
     # Exibir os botões se a página "Bisseção" não foi escolhida
     col1, col2 = st.columns(2, gap='small')
 
@@ -366,7 +375,7 @@ else:
     st.header("Descrição do Projeto: ")
 
     st.write("""
-    O projeto **Numérico Anônimos** foi desenvolvido com o objetivo de consolidar os conceitos adquiridos durante o semestre de Cálculo Numérico, ao mesmo tempo em que oferece uma ferramenta prática para a aplicação dos métodos matemáticos aprendidos. Este projeto visa ser uma contribuição útil e acessível para estudantes e profissionais que desejam entender e aplicar os métodos do Cálculo Numérico de forma simples e interativa.
+    O projeto foi desenvolvido com o objetivo de consolidar os conceitos estudados de Cálculo Numérico, ao mesmo tempo em que oferece uma ferramenta prática para a aplicação dos métodos matemáticos aprendidos. Este projeto visa ser uma contribuição útil e acessível para estudantes e profissionais que desejam entender e aplicar os métodos do Cálculo Numérico de forma simples e interativa.
 
     ### Objetivos
 
@@ -389,8 +398,6 @@ else:
     ### Contribuições e Impacto
 
     O projeto não apenas serviu para consolidar os conhecimentos adquiridos ao longo do semestre, mas também propõe uma ferramenta útil para qualquer pessoa que esteja interessada em aprender e aplicar os conceitos de Cálculo Numérico. A combinação de uma interface amigável com a funcionalidade do chatbot torna a experiência de aprendizado mais dinâmica e interativa.
-
-    O **Numérico Anônimos** representa uma forma prática e acessível de aplicar métodos matemáticos fundamentais, promovendo o entendimento e o uso desses conceitos em problemas reais e desafiadores.
     """)
 
     st.markdown("---")
@@ -448,8 +455,8 @@ else:
 
     st.markdown("---")
 
-
-    st.title("Conheça Nossa Equipe")
+_comentado = '''
+     st.title("Conheça Nossa Equipe")
 
     st.markdown("""
         <div style="text-align: justify;">
@@ -516,4 +523,4 @@ else:
                 </div>
             </div>
         """, unsafe_allow_html=True)
-
+    '''
