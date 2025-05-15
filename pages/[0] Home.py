@@ -12,13 +12,12 @@ from methods import *
 
 st.session_state['current_page'] = "Home"
 
-st.markdown("""
-    <style>
-        a[href^="https://github.com"] {
-            display: none !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+st.html('''
+<style>
+    #MainMenu {visibility: collapsed;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;} 
+</style>''')
 
 
 # Verificar se a chave da página "Bisseção" foi marcada na sessão

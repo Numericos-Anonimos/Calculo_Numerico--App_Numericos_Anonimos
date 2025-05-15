@@ -139,3 +139,15 @@ fig.show()
 Em resumo, embora o método de Newton possa oferecer uma convergência mais rápida devido ao uso explícito da derivada, o método das secantes é uma alternativa prática que dispensa o cálculo da derivada, tornando-o útil em situações onde essa operação é complicada ou inviável.
 
 ---
+
+## Como utilizar a ferramenta?
+1. **Abra a ferramenta**: Acesse a aba "Equações de uma Variável".
+1. **Defina a função**: Insira a fórmula da função de uma variável utilizando o teclado LaTeX disponível no site.
+2. **Escolha o método**: Após clicar em "Calcular", selecione o método desejado (Bisseção, Newton ou Secante).
+3. **Configure os parâmetros**:
+    - Para o método da Secante, insira os valores $x_0$, $x_1$ e o número máximo de iterações.
+    - Os outros parâmetros são definidos automaticamente.
+4. **Execute o cálculo**: Clique em "Aplicar" para iniciar o processo.
+5. **Visualize os resultados**:
+    - A ferramenta exibirá a raiz encontrada, os pontos intermediários e um gráfico interativo.
+    - O gráfico pode ser ampliado ou arrastado com o mouse para melhor visualização.

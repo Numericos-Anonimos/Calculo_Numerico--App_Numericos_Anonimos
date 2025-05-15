@@ -8,13 +8,12 @@ import plotly.express as px
 
 st.session_state['current_page'] = "Integração Numérica"
 
-st.markdown("""
-    <style>
-        a[href^="https://github.com"] {
-            display: none !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+st.html('''
+<style>
+    #MainMenu {visibility: collapsed;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;} 
+</style>''')
 
 
 

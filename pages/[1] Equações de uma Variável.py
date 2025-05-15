@@ -9,13 +9,12 @@ import pandas as pd
 
 st.session_state['current_page'] = "Equações de uma Variável"
 
-st.markdown("""
-    <style>
-        a[href^="https://github.com"] {
-            display: none !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+st.html('''
+<style>
+    #MainMenu {visibility: collapsed;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;} 
+</style>''')
 
 
 # Função para limpar o LaTeX
